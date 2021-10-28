@@ -17,6 +17,7 @@ app.use(express.json())
 app.use(login)
 app.use(createUser)
 app.use("/mercados",createMercado)
+app.use(createProduto)
 app.use("/produtos",createProduto)
 
 
