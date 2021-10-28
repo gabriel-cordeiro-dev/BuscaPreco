@@ -3,6 +3,7 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const Produtos = require('../models/produtos')
 
+//buscar item pela busca inserida
 router.get("/", (req, res) => {
     const { item_name } = req.query
     Produtos.findAll({
@@ -29,6 +30,7 @@ router.get("/", (req, res) => {
       });
   });
 
+// retorna todos os produtos
 router.get("/allProdutos", (req, res) => {
     Produtos.findAll()
     .then((produtos) => {
@@ -48,7 +50,7 @@ router.get("/allProdutos", (req, res) => {
     });
 });
 
-
+// cadastrar item no banco
 router.post("/", (req, res) => {
     Produtos.create({
         item_name: req.body.item_name,
