@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const Mercados = require('../models/mercado')
 
-router.get('/', (req, res) => {
+router.get('/allMercados', (req, res) => {
     Mercados.findAll()
     .then((mercados) => {
         if (mercados) {
@@ -22,7 +22,8 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     Mercados.create({
-        mercado_nome: req.body.mercado_nome
+        mercado_nome: req.body.mercado_nome,
+        preco: req.body.preco,
     })
     .then((mercado) => {
         return res.json({

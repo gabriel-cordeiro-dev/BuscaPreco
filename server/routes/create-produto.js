@@ -53,8 +53,7 @@ router.get("/allProdutos", (req, res) => {
 // cadastrar item no banco
 router.post("/", (req, res) => {
     Produtos.create({
-        item_name: req.body.item_name,
-        preco: req.body.preco,
+        item_name: req.body.item_name
     })
     .then((produtos) => {
     return res.json({
