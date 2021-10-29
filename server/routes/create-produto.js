@@ -34,15 +34,15 @@ router.get("/", (req, res) => {
 router.get("/allProdutos", (req, res) => {
     Produtos.findAll()
     .then((produtos) => {
-    if (produtos) {
-        console.log("produtos", produtos);
-        res.json(produtos);
-    } else {
-        console.log("produtos não encontrados");
-        return res.status(400).json({
-        err: "Produtos não econtrados",
-        });
-    }
+      if (produtos) {
+          console.log("produtos", produtos);
+          res.json(produtos);
+      } else {
+          console.log("produtos não encontrados");
+          return res.status(400).json({
+          err: "Produtos não econtrados",
+          });
+      }
     })
     .catch((err) => {
     console.log("Erro", err);
@@ -56,15 +56,15 @@ router.post("/", (req, res) => {
         item_name: req.body.item_name
     })
     .then((produtos) => {
-    return res.json({
-        data: produtos,
-    });
+      return res.json({
+          data: produtos,
+      });
     })
     .catch((err) => {
-    console.error(err);
-    return res.status(500).json({
+      console.error(err);
+      return res.status(500).json({
         err: err,
-    });
+      });
     });
 });
 
