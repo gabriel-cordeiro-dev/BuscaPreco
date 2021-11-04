@@ -108,24 +108,4 @@ router.post("/", (req, res) => {
     });
 });
 
-//inserir o produto no carrinho
-router.post("/carrinho", (req, res) => {
-    const { item_name, quantidade } = req.body
-    Carrinhos.create({
-        item_name: item_name,
-        quantidade: quantidade
-    })
-    .then((carrinho) => {
-      return res.json({
-          data: carrinho,
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-      return res.status(500).json({
-        err: err,
-      });
-    });
-})
-
 module.exports = router;
