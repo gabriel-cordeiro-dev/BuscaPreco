@@ -7,7 +7,7 @@ const MercadoProdutos = require('../models/mercado_produtos')
 const Carrinhos = require('../models/carrinho')
 
 //buscar item pela busca inserida
-router.get("/", (req, res) => {
+router.get("/busca", (req, res) => {
   const { item_name } = req.query
   Produtos.findAll({
     attributes: ['id','item_name'],
