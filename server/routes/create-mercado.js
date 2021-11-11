@@ -1,24 +1,24 @@
 const router = require('express').Router()
 const Mercados = require('../models/mercado')
 
-router.get('/allMercados', (req, res) => {
+router.get("/mercados", (req, res) => {
     Mercados.findAll()
     .then((mercados) => {
-        if (mercados) {
-            console.log("mercados", mercados)
-            res.json(mercados)
+    if (mercados) {
+          console.log("mercados", mercados);
+          res.json(mercados);
         } else {
-            console.log("Mercados não encontrados")
-            return res.status(400).json({
-                err: "Mercado não econtrado"
-            })
+          console.log("mercados não encontrados");
+          return res.status(400).json({
+            err: "mercados não econtrados",
+          });
         }
-    })
-    .catch((err) => {
-        console.log("Erro", err)
-        return res.json({err: err})
-    })
-})
+      })
+      .catch((err) => {
+        console.log("Erro", err);
+        return res.json({ err: err.message });
+      });
+  });
 
 router.post('/', (req, res) => {
     Mercados.create({

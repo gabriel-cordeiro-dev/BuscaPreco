@@ -105,7 +105,7 @@ router.put("/", (req, res) => {
 )
 
 // retorna todos os produtos
-router.get("/allProdutos", (req, res) => {
+router.get("/search", (req, res) => {
   Produtos.findAll()
     .then((produtos) => {
       if (produtos) {
