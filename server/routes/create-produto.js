@@ -10,15 +10,43 @@ const Carrinhos = require('../models/carrinho')
 router.get("/", (req, res) => {
   const { item_name } = req.query
   Produtos.findAll({
-    attributes: ['item_name'],
+    attributes: ['id','item_name'],
     where: {
       item_name: {
         [Op.like]: `${item_name}%`
       }
-    },
+    }
+  })
+    .then((produtos) => {
+      if (produtos) {
+        console.log("produtos", produtos);
+        res.json(produtos);
+      } else {
+        console.log("produtos não encontrados");
+        return res.status(400).json({
+          err: "Produtos não econtrados",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("Erro", err);
+      return res.json({ err: err.message });
+    });
+});
+
+//busca pelo id do item
+router.get("/:id", (req, res) => {
+  const { id } = req.params
+  Produtos.findOne({
+    attributes: ['id', 'item_name'], 
+    where: { id: id },
     include: {
       model: MercadoProdutos,
-      attributes: ['preco_produto']
+      attributes: ['preco_produto'],
+      include: {
+        model: Mercados,
+        attributes: ['mercado_nome']
+      }
     }
   })
     .then((produtos) => {
