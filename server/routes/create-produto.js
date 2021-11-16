@@ -38,7 +38,7 @@ router.get("/busca", (req, res) => {
 router.get("/:id", (req, res) => {
   const { id } = req.params
   Produtos.findOne({
-    attributes: ['id', 'item_name'], 
+    attributes: ['id', 'item_name'],
     where: { id: id },
     include: {
       model: MercadoProdutos,
