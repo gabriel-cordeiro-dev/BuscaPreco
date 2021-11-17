@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, Container, Input, Table, Form, FormGroup, Col, Row } from 'reactstrap';
 import BarraNavegacao from "../../components/navBar/barraNavegacao";
-import Pesquisa from "../../components/pesquisa/pesquisa";
 
 class Selecionado extends React.Component {
     constructor(props) {
@@ -17,7 +16,6 @@ class Selecionado extends React.Component {
         return (
             <>
                 <BarraNavegacao />
-                <Pesquisa />
                 <br /><br />
                 <Container>
                     <h2>Você selecionou o produto "Ovos - Caixa com 12 unidades"</h2>
