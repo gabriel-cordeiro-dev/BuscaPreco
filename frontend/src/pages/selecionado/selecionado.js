@@ -7,24 +7,7 @@ class Selecionado extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            mercados: [
-                {
-                    nome: "Angeloni",
-                    valor: 12.59
-                },
-                {
-                    nome: "Fort Atacadista",
-                    valor: 9.90
-                },
-                {
-                    nome: "Giassi",
-                    valor: 9.90
-                },
-                {
-                    nome: "Imperatriz",
-                    valor: 11.40
-                }
-            ]
+            mercados: []
         }
     }
     

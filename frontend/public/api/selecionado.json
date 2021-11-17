@@ -1,0 +1,52 @@
+{
+    "mercados": [
+        {
+            "id": "1",
+            "name": "Ovos - Caixa com 06 unidades",
+            "mercado1": "Fort Atacadista",
+            "valor1": 9.90,
+            "mercado2": "Angeloni",
+            "valor2": 12.59,
+            "mercado3": "Giassi",
+            "valor3": 10.29,
+            "mercado4": "Imperatriz",
+            "valor4": 11.67
+        },
+        {
+            "id": "2",
+            "name": "Ovos - Caixa com 12 unidades",
+            "mercado1": "Hiper Bom",
+            "valor1": 17.44,
+            "mercado2": "Big",
+            "valor2": 15.29,
+            "mercado3": "Giassi",
+            "valor3": 17.66,
+            "mercado4": "Angeloni",
+            "valor4": 18.26
+        },
+        {
+            "id": "3",
+            "name": "Detergente Ypê",
+            "mercado1": "Bistek",
+            "valor1": 3.29,
+            "mercado2": "Prado",
+            "valor2": 2.90,
+            "mercado3": "Fort Atacadista",
+            "valor3": 2.85,
+            "mercado4": "Imperatriz",
+            "valor4": 3.40
+        },
+        {
+            "id": "4",
+            "name": "Macarrão com Ovos - 300g",
+            "mercado1": "Walmart",
+            "valor1": 7.30,
+            "mercado2": "Koch",
+            "valor2": 8.36,
+            "mercado3": "Brasil Atacadista",
+            "valor3": 6.98,
+            "mercado4": "Angeloni",
+            "valor4": 8.70
+        }
+    ]
+}

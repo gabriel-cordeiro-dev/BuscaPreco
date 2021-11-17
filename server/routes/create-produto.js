@@ -20,7 +20,7 @@ router.get("/busca", (req, res) => {
     .then((produtos) => {
       if (produtos) {
         console.log("produtos", produtos);
-        res.json(produtos);
+        res.json({produtos: produtos});
       } else {
         console.log("produtos não encontrados");
         return res.status(400).json({
