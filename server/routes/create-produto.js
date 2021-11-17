@@ -7,7 +7,7 @@ const MercadoProdutos = require('../models/mercado_produtos')
 const Carrinhos = require('../models/carrinho')
 
 //buscar item pela busca inserida
-router.get("/", (req, res) => {
+router.get("/busca", (req, res) => {
   const { item_name } = req.query
   Produtos.findAll({
     attributes: ['id','item_name'],
@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
     .then((produtos) => {
       if (produtos) {
         console.log("produtos", produtos);
-        res.json(produtos);
+        res.json({produtos: produtos});
       } else {
         console.log("produtos não encontrados");
         return res.status(400).json({
@@ -34,11 +34,11 @@ router.get("/", (req, res) => {
     });
 });
 
-//buscar pelo id
+//busca pelo id do item
 router.get("/:id", (req, res) => {
   const { id } = req.params
   Produtos.findOne({
-    attributes: ['id', 'item_name'], 
+    attributes: ['id', 'item_name'],
     where: { id: id },
     include: {
       model: MercadoProdutos,
@@ -105,7 +105,7 @@ router.put("/", (req, res) => {
 )
 
 // retorna todos os produtos
-router.get("/allProdutos", (req, res) => {
+router.get("/search", (req, res) => {
   Produtos.findAll()
     .then((produtos) => {
       if (produtos) {

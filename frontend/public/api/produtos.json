@@ -1,0 +1,20 @@
+{
+    "produtos": [
+        {
+            "id": "1",
+            "name": "Ovos - Caixa com 06 unidades"
+        },
+        {
+            "id": "2",
+            "name": "Ovos - Caixa com 12 unidades"
+        },
+        {
+            "id": "3",
+            "name": "Detergente Ypê"
+        },
+        {
+            "id": "4",
+            "name": "Macarrão com Ovos - 300g"
+        }
+    ]
+}
