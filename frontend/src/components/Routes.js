@@ -2,8 +2,8 @@ import React from 'react'
 
 import {Switch, Route, BrowserRouter } from 'react-router-dom'
 import inicio from '../pages/init/inicio.js'
-import Produtos from '../pages/listaProdutos/listaProd.js'
-import Selecionado from '../pages/selecionado/selecionado.js'
+import Produtos from '../pages/listaProdutos/Produtos'
+import Selecionado from '../pages/selecionado/Selecionado'
 
 const Routes = () => (
     <BrowserRouter>

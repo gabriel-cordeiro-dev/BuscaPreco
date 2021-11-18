@@ -1,24 +1,41 @@
 import React from "react";
 import { Button, Container, Input, Table, Form, FormGroup, Col, Row } from 'reactstrap';
-import BarraNavegacao from "../../components/navBar/barraNavegacao";
 
 class Selecionado extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            mercados: []
+            mercados: [],
         }
     }
-    
+
+    componentDidMount() {
+        const id_produto = this.props.id_produto_text;
+        // const token = getToken();
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': `Bearer ${token}`
+            }
+        }
+        fetch(`http://localhost:5555/produtos/${id_produto}`, options)
+            .then(mercados =>
+                mercados.json().then(data => this.setState(state => ({
+                    mercados: data['mercado_has_produtos']})
+                    )
+                )
+            )
+    }
+
     render() {
         const { mercados } = this.state;
+        const id_produto = this.props.id_produto_text;
 
         return (
             <>
-                <BarraNavegacao />
                 <br /><br />
                 <Container>
-                    <h2>Você selecionou o produto "Ovos - Caixa com 12 unidades"</h2>
+                    <h2>Você selecionou o produto "{id_produto}"</h2>
                     <hr />
                     <Form>
                         <FormGroup row>
@@ -32,7 +49,7 @@ class Selecionado extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {mercados.map((mercado, index) => {
+                                    {mercados.map((mercados, index) => {
                                         return (
                                             <tr>
                                                 <th key={index}>
@@ -44,8 +61,8 @@ class Selecionado extends React.Component {
                                                         {' '}
                                                     </FormGroup>
                                                 </th>
-                                                <td>{mercado.nome}</td>
-                                                <td>{mercado.valor}</td>
+                                                <td>{mercados.mercado.mercado_nome}</td>
+                                                <td>{mercados.preco_produto}</td>
                                                 <td>
                                                     <Col sm={2}>
                                                         <Input sm={10} type="number"></Input>
