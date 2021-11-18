@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const Carrinhos = require('../models/carrinho')
 const { check, body, validationResult } = require('express-validator');
 
 require('dotenv').config();
@@ -59,6 +60,25 @@ router.post('/criar', [
             err: error
         });
     }
+});
+
+router.get("/users", async (req, res) => {
+    const users = await User.findAll({
+        attributes: ['id', 'username'],
+        include: {
+            model: Carrinhos,
+            attributes: ['id', 'valor_total']
+        }
+    });
+
+    if (!users) {
+        console.log("questão não encontrada");
+        return res.status(400).json({
+            err: 'Questão não encontrada'
+        })
+    }
+
+    res.json(users);
 });
 
 module.exports = router;

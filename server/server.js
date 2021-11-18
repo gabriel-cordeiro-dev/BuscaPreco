@@ -6,6 +6,7 @@ const login = require('./routes/login')
 const createUser = require('./routes/create-user')
 const createProduto = require('./routes/create-produto')
 const createMercado = require('./routes/create-mercado')
+const carrinho = require('./routes/create-carrinho')
 const auth = require('./auth')
 
 const app = express()
@@ -20,6 +21,7 @@ app.use(createMercado)
 app.use("/mercado",createMercado)
 app.use(createProduto)
 app.use("/produtos",createProduto)
+app.use("/carrinhos", carrinho)
 
 
 app.listen(5555, () => {
