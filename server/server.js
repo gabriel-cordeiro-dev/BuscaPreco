@@ -17,6 +17,7 @@ app.use(express.json())
 //rotas
 app.use(login)
 app.use(createUser)
+app.use(auth) // a partir daqui precisa do token de autenticacao
 app.use(createMercado)
 app.use("/mercado",createMercado)
 app.use(createProduto)
