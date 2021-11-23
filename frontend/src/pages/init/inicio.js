@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Button, Container, Input } from 'reactstrap';
 import BarraNavegacao from "../../components/navBar/barraNavegacao";
 import SearchBox from "../../components/pesquisa/SearchBox";
-import Produtos from "../listaProdutos/Produtos";
+import Produtos from "../produtos/Produtos";
 import Selecionado from "../selecionado/Selecionado";
 
 class Inicio extends React.Component {
@@ -11,10 +11,12 @@ class Inicio extends React.Component {
 
         this.state = {
             search_box_text: "",
-            id_produto_text: ""
+            id_produto_text: "",
+            nome_produto_text: ""
         }
         this.searchBoxHandler = this.searchBoxHandler.bind(this);
-        this.idProdutoHandler = this.idProdutoHandler.bind(this);
+        this.produtoHandler = this.produtoHandler.bind(this);
+        // this.nomeProdutoHandler = this.nomeProdutoHandler.bind(this);
 
     }
 
@@ -26,13 +28,13 @@ class Inicio extends React.Component {
         });
     }
 
-    idProdutoHandler(id_produto) {
+    produtoHandler(id_produto, nome_produto) {
         console.log("dentro da página Início: " + id_produto)
         this.setState({
-            id_produto_text: id_produto
+            id_produto_text: id_produto,
+            nome_produto_text: nome_produto
         });
     }
-
 
     render() {
         const { id_produto_text } = this.state;
@@ -44,7 +46,7 @@ class Inicio extends React.Component {
                         <BarraNavegacao />
                         <SearchBox input_text={this.searchBoxHandler} />
                         <Produtos
-                            id_produto={this.idProdutoHandler}
+                            produto={this.produtoHandler} //passa as props id e nome do componente Produtos para a página Início
                             search_box_text={this.state.search_box_text} />
 
                     </Fragment>
@@ -54,7 +56,9 @@ class Inicio extends React.Component {
             return (
                 <>
                     <BarraNavegacao />
-                    <Selecionado id_produto_text={this.state.id_produto_text}/>
+                    <Selecionado 
+                    nome_produto_text={this.state.nome_produto_text} //pega o state da pag inicio e passa para o componente Selecionado
+                    id_produto_text={this.state.id_produto_text}/>
                 </>
             )
         }//fim do else

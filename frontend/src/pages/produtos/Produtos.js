@@ -14,14 +14,14 @@ class Produtos extends React.Component {
         super(props)
         this.state = {
             produtos: [],
-            id_produto: ''
+            produto: ''
         }
-
-        this.setIdProduto = this.setIdProduto.bind(this)
+        
+        this.setProduto = this.setProduto.bind(this)
     }
 
-    setIdProduto(id_produto) {
-        this.props.id_produto(id_produto)
+    setProduto(id_produto, nome_produto) {
+        this.props.produto(id_produto, nome_produto)
     }
    
     componentDidMount() {
@@ -33,7 +33,6 @@ class Produtos extends React.Component {
     }
 
     render() {
-        const { redirect } = this.state;
         let inputText = this.props.search_box_text.toLowerCase();
         let produtosFiltrados = this.state.produtos.filter(
             produto => produto.item_name.toLowerCase().includes(inputText)
@@ -57,7 +56,7 @@ class Produtos extends React.Component {
                                 return (
 
                                     <Button
-                                        onClick={() => this.setIdProduto(lista.id)}
+                                        onClick={() => this.setProduto(lista.id, lista.item_name)}
                                     >
                                         {lista.item_name}
                                         {console.log(this.state.id_produto)}
