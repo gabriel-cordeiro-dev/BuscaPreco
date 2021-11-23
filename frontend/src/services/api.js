@@ -1,10 +1,7 @@
 import axios from "axios";
 
-// Pode ser algum servidor executando localmente: 
-// http://localhost:3000
-
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://localhost:5555",
 });
 
 export default api;

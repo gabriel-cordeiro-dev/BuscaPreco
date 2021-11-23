@@ -29,40 +29,33 @@ class Selecionado extends React.Component {
 
     render() {
         const { mercados } = this.state;
-        const id_produto = this.props.id_produto_text;
+        const nome_produto = this.props.nome_produto_text;
 
         return (
             <>
                 <br /><br />
                 <Container>
-                    <h2>Você selecionou o produto "{id_produto}"</h2>
+                    <h2>Você selecionou o produto "{nome_produto}"</h2>
                     <hr />
                     <Form>
                         <FormGroup row>
                             <Table row hover responsive>
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+
                                         <th>Supermercado</th>
                                         <th>Valor</th>
                                         <th>Qtd</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {mercados.map((mercados, index) => {
+                                    {mercados.map((mercados) => {
                                         return (
                                             <tr>
-                                                <th key={index}>
-                                                    <FormGroup check>
-                                                        <Input
-                                                            id="checkbox2"
-                                                            type="checkbox"
-                                                        />
-                                                        {' '}
-                                                    </FormGroup>
-                                                </th>
                                                 <td>{mercados.mercado.mercado_nome}</td>
-                                                <td>{mercados.preco_produto}</td>
+                                                <td>
+                                                    R$ {mercados.preco_produto}
+                                                </td>
                                                 <td>
                                                     <Col sm={2}>
                                                         <Input sm={10} type="number"></Input>
