@@ -33,7 +33,7 @@ class Login extends React.Component {
             loginf(token)
 
             if (response.status === 200) {
-                this.props.history.push("/");
+                this.props.history.push("/busca");
             }
         } catch (error) {
             console.log(error.response.data)

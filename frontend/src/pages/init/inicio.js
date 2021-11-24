@@ -20,7 +20,6 @@ class Inicio extends React.Component {
 
     }
 
-
     searchBoxHandler(input_text) {
         // console.log("dentro do da página Início: " + input_text)
         this.setState({

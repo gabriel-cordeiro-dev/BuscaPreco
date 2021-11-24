@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Container, Input, Table, Form, FormGroup, Col, Row } from 'reactstrap';
+import { getToken } from "../../utils/auth";
 
 class Selecionado extends React.Component {
     constructor(props) {
@@ -11,11 +12,11 @@ class Selecionado extends React.Component {
 
     componentDidMount() {
         const id_produto = this.props.id_produto_text;
-        // const token = getToken();
+        const token = getToken();
         const options = {
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             }
         }
         fetch(`http://localhost:5555/produtos/${id_produto}`, options)

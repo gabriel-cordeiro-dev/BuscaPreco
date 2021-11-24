@@ -1,13 +1,6 @@
 import React from "react";
-import { Redirect } from 'react-router-dom'
 import { Button, Container, ListGroup } from 'reactstrap';
-
-
-async function getProdutos() {
-    let response = await fetch('http://localhost:5555/produtos/busca?item_name')
-    let data = await response.json()
-    return data
-}
+import { getToken } from "../../utils/auth";
 
 class Produtos extends React.Component {
     constructor(props) {
@@ -25,14 +18,26 @@ class Produtos extends React.Component {
     }
    
     componentDidMount() {
-        getProdutos().then(data => {
-            this.setState(state => ({
-                produtos: data['produtos']
-            }))
-        })
+        const token = getToken();
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        fetch(`http://localhost:5555/produtos/busca?item_name`, options)
+            .then(mercados =>
+                mercados.json().then(data => this.setState(state => ({
+                    produtos: data['produtos']})
+                    )
+                )
+            )
     }
+    
+    
 
     render() {
+        const produtos = this.state.produtos;
         let inputText = this.props.search_box_text.toLowerCase();
         let produtosFiltrados = this.state.produtos.filter(
             produto => produto.item_name.toLowerCase().includes(inputText)
