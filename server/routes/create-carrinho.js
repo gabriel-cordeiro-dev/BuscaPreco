@@ -8,6 +8,29 @@ const Carrinho = require('../models/carrinho')
 const { check, body, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 
+function getUserIdFromTokem(req, res) {
+    let token = req.headers['authorization']
+    console.log("token: " + token)
+    const tokenPuro = token.split(' ').pop()
+    let userId
+
+    jwt.verify(tokenPuro, process.env.SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                err: 'Accesso negado'
+            })
+        }
+
+        console.log('id user', decoded.id)
+        userId = decoded.id
+    })
+    return userId
+}
+
+function calculateValorTotal(preco_produto, quantidade) {
+    return preco_produto * quantidade
+}
+
 router.post("/", [
     check('id_mercado', "id_mercado é um campo obrigatório").trim().escape().notEmpty(),
     check('id_produtos', "id_produto é um campo obrigatório").trim().escape().notEmpty(),
@@ -25,21 +48,7 @@ router.post("/", [
         if (!erros.isEmpty() || contextoErros.erros.length > 0) {
             return res.status(422).json(contextoErros);
         } else {
-            console.log("token: " + req.headers['authorization'])
-            let token = req.headers['authorization'];
-            const tokenPuro = token.split(' ').pop();
-            let userId;
-
-            jwt.verify(tokenPuro, process.env.SECRET, (err, decoded) => {
-                if (err) {
-                    return res.status(401).json({
-                        err: 'Accesso negado'
-                    });
-                }
-
-                console.log('id user', decoded.id);
-                userId = decoded.id;
-            });
+            let userId = getUserIdFromTokem(req, res)
 
             const produto = await Produtos.findOne({
                 where: { id: req.body.id_produtos }
@@ -80,7 +89,7 @@ router.post("/", [
                 })
             }
 
-            const valor_total = mercadoProduto.preco_produto * req.body.quantidade;
+            const valor_total = calculateValorTotal(mercadoProduto.preco_produto, req.body.quantidade);
             console.log("valor_total: " + valor_total)
 
             const newCarrinho = await Carrinho.create({
@@ -133,6 +142,33 @@ router.get("/list", async (req, res) => {
         })
     }
 
+    res.json(carrinhos);
+});
+
+router.get("/minhaLista", async (req, res) => {
+    let userId = getUserIdFromTokem(req, res)
+
+    const carrinhos = await Carrinho.findAll({
+        where: { users_id: userId },
+        attributes: ['id', 'quantidade', 'valor_total'],
+        include: {
+            model: CarrinhoProdutos,
+            attributes: ['produtos_id'],
+            include: {
+                model: Produtos,
+                attributes: ['item_name']
+            }
+        }
+    });
+
+    if (!carrinhos) {
+        console.log("carrinhos não encontrada");
+        return res.status(400).json({
+            err: 'carrinhos não encontrada'
+        })
+    }
+
+    console.log("meu carrinho: " + carrinhos)
     res.json(carrinhos);
 });
 
