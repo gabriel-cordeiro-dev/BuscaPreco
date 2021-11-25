@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { Button, Container, Input } from 'reactstrap';
 import BarraNavegacao from "../../components/navBar/barraNavegacao";
 import SearchBox from "../../components/pesquisa/SearchBox";
 import Produtos from "../produtos/Produtos";

@@ -45,7 +45,7 @@ router.get("/:id", (req, res) => {
       attributes: ['preco_produto'],
       include: {
         model: Mercados,
-        attributes: ['mercado_nome']
+        attributes: ['id','mercado_nome']
       }
     }
   })

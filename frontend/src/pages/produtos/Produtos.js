@@ -37,7 +37,6 @@ class Produtos extends React.Component {
     
 
     render() {
-        const produtos = this.state.produtos;
         let inputText = this.props.search_box_text.toLowerCase();
         let produtosFiltrados = this.state.produtos.filter(
             produto => produto.item_name.toLowerCase().includes(inputText)

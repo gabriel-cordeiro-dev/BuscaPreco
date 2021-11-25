@@ -8,7 +8,7 @@ const Carrinho = require('../models/carrinho')
 const { check, body, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 
-router.post("/:userId", [
+router.post("/", [
     check('id_mercado', "id_mercado é um campo obrigatório").trim().escape().notEmpty(),
     check('id_produtos', "id_produto é um campo obrigatório").trim().escape().notEmpty(),
     check('quantidade', "quantidade é um campo obrigatório").trim().escape().notEmpty()

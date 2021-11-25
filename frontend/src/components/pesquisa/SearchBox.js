@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Input } from 'reactstrap';
+import { Container, Input } from 'reactstrap';
 
 
 class SearchBox extends React.Component {
