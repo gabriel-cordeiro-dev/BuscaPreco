@@ -28,6 +28,7 @@ function getUserIdFromTokem(req, res) {
 }
 
 function calculateValorTotal(preco_produto, quantidade) {
+    console.log("dentro da func calculate: " + preco_produto * quantidade)
     return preco_produto * quantidade
 }
 
@@ -109,6 +110,115 @@ router.post("/", [
                 msg: 'Carrinho salvo com sucesso!',
                 carrinho: {
                     "id": newCarrinho.id,
+                    "valor_total": valor_total
+                }
+            })
+        }
+    } catch (error) {
+        console.log('ERROR:', error);
+        return res.status(500).json({
+            err: error
+        });
+    }
+
+});
+
+router.post("/:carrinho_id/adicionarProduto", [
+    check('id_mercado', "id_mercado é um campo obrigatório").trim().escape().notEmpty(),
+    check('id_produtos', "id_produto é um campo obrigatório").trim().escape().notEmpty(),
+    check('quantidade', "quantidade é um campo obrigatório").trim().escape().notEmpty()
+], async (req, res) => {
+    try {
+        const erros = validationResult(req);
+
+        const contextoErros = {
+            erros: erros.array(),
+        };
+
+        console.log(erros);
+
+        if (!erros.isEmpty() || contextoErros.erros.length > 0) {
+            return res.status(422).json(contextoErros);
+        } else {
+            let userId = getUserIdFromTokem(req, res)
+            const { carrinho_id } = req.params
+
+            const carrinho = await Carrinho.findOne({
+                attributes: ['id', 'quantidade', 'valor_total'],
+                where: {
+                    id: carrinho_id
+                }
+            });
+            console.log("carrinho: " + carrinho)
+
+            if (!carrinho) {
+                console.log("carrinho não foi encontrado");
+                return res.status(400).json({
+                    err: 'carrinho não foi encontrado'
+                })
+            }
+
+            const produto = await Produtos.findOne({
+                where: { id: req.body.id_produtos }
+            });
+
+            if (!produto) {
+                console.log("produto não encontrado");
+                return res.status(400).json({
+                    err: 'Produto não encontrado'
+                })
+            }
+
+            const mercado = await Mercado.findOne({
+                attributes: ['id', 'mercado_nome'],
+                where: { id: req.body.id_mercado }
+            });
+
+            if (!mercado) {
+                console.log("mercado não encontrado");
+                return res.status(400).json({
+                    err: 'Mercado não encontrado'
+                })
+            }
+
+            const mercadoProduto = await MercadoProdutos.findOne({
+                attributes: ['mercado_id', 'produtos_id', 'preco_produto'],
+                where: {
+                    mercado_id: req.body.id_mercado,
+                    produtos_id: req.body.id_produtos
+                }
+            });
+            console.log("mercadoProduto: " + mercadoProduto)
+
+            if (!mercadoProduto) {
+                console.log("produto no mercado não foi encontrado");
+                return res.status(400).json({
+                    err: 'produto no mercado não foi encontrado'
+                })
+            }
+
+            const valor_total = parseFloat(carrinho.valor_total) + parseFloat(calculateValorTotal(mercadoProduto.preco_produto, req.body.quantidade));
+            console.log("valor_total fora da func: " + valor_total)
+            const quantidade = Number(carrinho.quantidade) + Number(req.body.quantidade)
+
+            console.log("carrinho antes" + carrinho)
+            const updatedCarrinho = await carrinho.update({
+                quantidade: quantidade,
+                valor_total: valor_total
+            });
+            console.log("carrinho atualizado: " + updatedCarrinho)
+
+            const newCarrinhoProduto = await CarrinhoProdutos.create({
+                carrinho_id: carrinho.id,
+                produtos_id: req.body.id_produtos
+            });
+            console.log("carrinhoProduto: " + newCarrinhoProduto)
+
+            res.json({
+                msg: 'Produto adicionado no carrinho com sucesso!',
+                carrinho: {
+                    "id": updatedCarrinho.id,
+                    "quantidade": quantidade,
                     "valor_total": valor_total
                 }
             })
