@@ -1,8 +1,6 @@
 import React from "react";
 import { Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
-// import { Redirect } from 'react-router-dom'
-import { getToken, loginf } from "../../utils/auth";
-import api from '../../services/api';
+import { getToken } from "../../utils/auth";
 
 
 class Selecionado extends React.Component {
@@ -12,7 +10,6 @@ class Selecionado extends React.Component {
             id_mercado: '',
             id_produtos: this.props.id_produto_text,
             quantidade: '',
-            // redirect: false,
             disabled: true,
             mercados: [],
         }
@@ -47,7 +44,8 @@ class Selecionado extends React.Component {
         fetch(`http://localhost:5555/produtos/${id_produto}`, options)
             .then(mercados =>
                 mercados.json().then(data => this.setState(state => ({
-                    mercados: data['mercado_has_produtos']})
+                    mercados: data['mercado_has_produtos']
+                })
                 ))
             )
     }
@@ -55,20 +53,16 @@ class Selecionado extends React.Component {
     render() {
         const { mercados } = this.state;
         const nome_produto = this.props.nome_produto_text;
-        // const { redirect } = this.state
 
-        const id_mercado = this.state.id_mercado;
-        const id_produto = this.state.id_produtos;
-        const quantidade = this.state.quantidade;
+        // const id_mercado = this.state.id_mercado;
+        // const id_produto = this.state.id_produtos;
+        // const quantidade = this.state.quantidade;
 
-        console.log(id_mercado);
-        console.log(id_produto);
-        console.log(quantidade);
+        // console.log(id_mercado);
+        // console.log(id_produto);
+        // console.log(quantidade);
 
-        // if (redirect) {
-        //     return <Redirect to="/busca" />
-        // }
-        // else {
+
         return (
             <>
                 <br /><br />
@@ -113,11 +107,11 @@ class Selecionado extends React.Component {
                             </Table>
                         </FormGroup>
                     </Form>
-
                 </Container>
+
+
             </>
         )//fim do return
-        // }//fim do else
     }//fim do render
 
 
@@ -142,7 +136,7 @@ class Selecionado extends React.Component {
                 return res.json()
             }).then(data => {
                 alert("deu certo")
-                this.setState({ redirect: true })
+                window.location.reload();
             }).catch(err => console.log(err))
 
         e.preventDefault()

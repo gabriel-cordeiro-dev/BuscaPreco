@@ -1,8 +1,10 @@
 import React, { Fragment } from "react";
-import BarraNavegacao from "../../components/navBar/barraNavegacao";
+import NavBarLogado from "../../components/navBar/NavBarLogado";
 import SearchBox from "../../components/pesquisa/SearchBox";
 import Produtos from "../produtos/Produtos";
 import Selecionado from "../selecionado/Selecionado";
+import Footer from '../../components/footer/footer.js';
+import '../../components/footer/footer.css'
 
 class Inicio extends React.Component {
     constructor(props) {
@@ -15,12 +17,10 @@ class Inicio extends React.Component {
         }
         this.searchBoxHandler = this.searchBoxHandler.bind(this);
         this.produtoHandler = this.produtoHandler.bind(this);
-        // this.nomeProdutoHandler = this.nomeProdutoHandler.bind(this);
 
     }
 
     searchBoxHandler(input_text) {
-        // console.log("dentro do da página Início: " + input_text)
         this.setState({
             search_box_text: input_text
         });
@@ -41,22 +41,23 @@ class Inicio extends React.Component {
             return (
                 <>
                     <Fragment>
-                        <BarraNavegacao />
+                        <NavBarLogado />
                         <SearchBox input_text={this.searchBoxHandler} />
                         <Produtos
                             produto={this.produtoHandler} //passa as props id e nome do componente Produtos para a página Início
                             search_box_text={this.state.search_box_text} />
-
+                    <footer><Footer/></footer>
                     </Fragment>
                 </>
             )//fim do return
         } else {
             return (
                 <>
-                    <BarraNavegacao />
+                    <NavBarLogado />
                     <Selecionado 
                     nome_produto_text={this.state.nome_produto_text} //pega o state da pag inicio e passa para o componente Selecionado
                     id_produto_text={this.state.id_produto_text}/>
+                    <footer><Footer/></footer>
                 </>
             )
         }//fim do else

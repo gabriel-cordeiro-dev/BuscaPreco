@@ -2,6 +2,12 @@ import React from 'react'
 import { Button, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
 import api from '../../services/api';
 import { loginf } from '../../utils/auth';
+import NavBarLock from '../../components/navBar/NavBarLock';
+import Footer from '../../components/footer/footer.js';
+import './login.css'
+import '../../components/footer/footer.css'
+
+
 
 class Login extends React.Component {
     constructor(props) {
@@ -44,13 +50,14 @@ class Login extends React.Component {
     render() {
         return (
             <>
+                <NavBarLock />
                 <Container>
+                    <h1 className='mt-5'>Login</h1>
                     <Form initialvalues={{}} onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Row>
-                                <Col sm="12" md={{ size: 6, offset: 3 }}>
-
-                                    <Label for="username">Login</Label><br />
+                                <Col className="mt-5" sm="12" md={{ size: 6, offset: 3 }}>
+                                    <Label for="username">Usuário</Label><br />
                                     <Input type="user" id="username" name="username" placeholder="Usuário" onChange={this.handleChange} /> <br />
                                 </Col>
                             </Row>
@@ -68,13 +75,13 @@ class Login extends React.Component {
                             <Col sm="12" md={{ size: 6, offset: 3 }}>
                                 <Button color="warning" size="lg" type="submit" value="Entrar">Entrar</Button>
                                 <div id="btnCriar">
-                                    <Button href="./Register" color="link">Não possuo conta</Button>
+                                    <Button href="./Registro" color="link">Não possuo conta</Button>
                                 </div>
                             </Col>
-
                         </Row>
                     </Form>
                 </Container>
+                <footer><Footer/></footer>  
             </>
         );
     }

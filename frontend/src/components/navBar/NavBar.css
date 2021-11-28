@@ -1,0 +1,14 @@
+img#logo{
+    width: 100px;
+    height: auto;
+}
+
+img#imgUsuario{
+    width: 40px;
+    height: auto;
+}
+
+#navRegistro{
+    font-size: small;
+    color: blue;
+}
