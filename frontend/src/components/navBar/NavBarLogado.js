@@ -55,7 +55,7 @@ class NavBarLogado extends React.Component {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/minhaslistas">
+              <NavLink href="/listas">
                 Minhas Listas
               </NavLink>
             </NavItem>
