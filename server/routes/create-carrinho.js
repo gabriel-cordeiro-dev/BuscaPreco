@@ -258,7 +258,7 @@ router.get("/list", async (req, res) => {
 router.get("/minhaLista", async (req, res) => {
     let userId = getUserIdFromTokem(req, res)
 
-    const carrinhos = await Carrinho.findAll({
+    const listaCarrinho = await Carrinho.findAll({
         where: { users_id: userId },
         attributes: ['id', 'quantidade', 'valor_total'],
         include: {
@@ -271,15 +271,15 @@ router.get("/minhaLista", async (req, res) => {
         }
     });
 
-    if (!carrinhos) {
+    if (!listaCarrinho) {
         console.log("carrinhos não encontrada");
         return res.status(400).json({
             err: 'carrinhos não encontrada'
         })
     }
 
-    console.log("meu carrinho: " + carrinhos)
-    res.json(carrinhos);
+    console.log("meu carrinho: " + listaCarrinho)
+    res.json({carrinhos: listaCarrinho});
 });
 
 module.exports = router;

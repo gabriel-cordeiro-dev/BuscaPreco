@@ -57,7 +57,7 @@ class Registro extends React.Component {
                         <FormGroup>
                             <Row>
                                 <Col className='mt-5' sm="12" md={{ size: 6, offset: 3 }}>
-                                    <Label for="username">Login</Label><br />
+                                    <Label for="username">Usuário</Label><br />
                                     <Input type="user" id="username" name="username" placeholder="Usuário" onChange={this.handleChange} /> <br />
                                 </Col>
                             </Row>

@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
 import { getToken } from "../../utils/auth";
 
-
 class Selecionado extends React.Component {
     constructor(props) {
         super(props)
@@ -114,8 +113,6 @@ class Selecionado extends React.Component {
         )//fim do return
     }//fim do render
 
-
-
     handleSubmit(e) {
         const token = getToken()
         const options = {
@@ -144,5 +141,11 @@ class Selecionado extends React.Component {
 
 }// fim da classe Selecionado
 
-
 export default Selecionado;
+
+
+//GET pegar Id das listas que usuário já possui -> http://localhost:5555/carrinhos/minhalista
+
+//POST para adicionar na lista já criada -> http://localhost:5555/carrinhos/:carrinho_id/adicionarProduto
+
+//POST para criar uma lista -> http://localhost:5555/carrinhos
