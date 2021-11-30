@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
+import { Alert, Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
 import { getToken } from "../../utils/auth";
+import MyLists from "../listas/MyLists";
 
 class Selecionado extends React.Component {
     constructor(props) {
@@ -15,7 +16,6 @@ class Selecionado extends React.Component {
 
         this.setIds = this.setIds.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleChange = (event) => {
@@ -53,7 +53,7 @@ class Selecionado extends React.Component {
         const { mercados } = this.state;
         const nome_produto = this.props.nome_produto_text;
 
-        // const id_mercado = this.state.id_mercado;
+        const id_mercado = this.state.id_mercado;
         // const id_produto = this.state.id_produtos;
         // const quantidade = this.state.quantidade;
 
@@ -61,83 +61,75 @@ class Selecionado extends React.Component {
         // console.log(id_produto);
         // console.log(quantidade);
 
+        if (id_mercado <= 0) {
+            return (
+                <>
+                    <br /><br />
+                    <Container>
+                        <h2>Você selecionou o produto "{nome_produto}"</h2>
+                        <hr />
+                        <Form>
+                            {/* onSubmit={this.handleSubmit}> */}
+                            <FormGroup row>
+                                <Table row hover responsive>
+                                    <thead>
+                                        <tr>
 
-        return (
-            <>
-                <br /><br />
-                <Container>
-                    <h2>Você selecionou o produto "{nome_produto}"</h2>
-                    <hr />
-                    <Form onSubmit={this.handleSubmit}>
-                        <FormGroup row>
-                            <Table row hover responsive>
-                                <thead>
-                                    <tr>
+                                            <th>Supermercado</th>
+                                            <th>Valor</th>
+                                            <th>Qtd</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {mercados.map((mercados) => {
+                                            return (
+                                                <tr>
+                                                    <td>{mercados.mercado.mercado_nome}</td>
+                                                    <td>
+                                                        R$ {mercados.preco_produto}
+                                                    </td>
+                                                    <td>
+                                                        <Col sm={2}>
+                                                            <Input sm={10} type="number" name="quantidade" onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </td>
+                                                    <td>
+                                                        <Button
+                                                            onClick={() => this.setIds(mercados.mercado.id)}>
+                                                            Adicionar
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </Table>
+                            </FormGroup>
+                        </Form>
+                    </Container>
+                </>
+            )//fim do 1º return
+        } else {
+            return (
+                <>
+                    <Container>
+                        <Alert className="mt-5" color="danger">
+                            ATENÇÃO!
+                            Escolha uma lista para adicionar o produto selecionado!
+                        </Alert>
+                    </Container>
+                    <MyLists
+                        id_mercado_text={this.state.id_mercado}
+                        id_produto_text={this.state.id_produtos}
+                        quantidade={this.state.quantidade}
+                    />
 
-                                        <th>Supermercado</th>
-                                        <th>Valor</th>
-                                        <th>Qtd</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {mercados.map((mercados) => {
-                                        return (
-                                            <tr>
-                                                <td>{mercados.mercado.mercado_nome}</td>
-                                                <td>
-                                                    R$ {mercados.preco_produto}
-                                                </td>
-                                                <td>
-                                                    <Col sm={2}>
-                                                        <Input sm={10} type="number" name="quantidade" onChange={this.handleChange}></Input>
-                                                    </Col>
-                                                </td>
-                                                <td>
-                                                    <Button
-                                                        id="submit" type="submit" disabled={this.state.disabled}
-                                                        onClick={() => this.setIds(mercados.mercado.id)}>
-                                                        Adicionar
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </Table>
-                        </FormGroup>
-                    </Form>
-                </Container>
-
-
-            </>
-        )//fim do return
+                </>
+            )
+        }
     }//fim do render
 
-    handleSubmit(e) {
-        const token = getToken()
-        const options = {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify(this.state)
-        }
 
-        fetch("http://localhost:5555/carrinhos", options)
-            .then(res => {
-                if (!res.ok && res.status === 401) {
-                    alert('ERRO')
-                }
-                console.log("deu certo");
-                return res.json()
-            }).then(data => {
-                alert("deu certo")
-                window.location.reload();
-            }).catch(err => console.log(err))
-
-        e.preventDefault()
-    }//fim do método handleSubmit
 
 }// fim da classe Selecionado
 

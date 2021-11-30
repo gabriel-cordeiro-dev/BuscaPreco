@@ -1,17 +1,28 @@
 import React from "react";
-import { Button, Container, Card, CardBody, CardGroup, CardImg, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import { Button, Form, Container, Card, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
 import { getToken } from "../../utils/auth";
+
 
 class MyLists extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            carrinhos: []
+            carrinhos: [],
+            id_lista: '',
+            id_mercado: this.props.id_mercado_text,
+            id_produtos: this.props.id_produto_text,
+            quantidade: this.props.quantidade
         }
 
-        // this.setListas = this.setListas.bind(this)
+        this.setLista = this.setLista.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
+    setLista = (id_lista) => {
+        this.setState({
+            id_lista
+        })
+    }
 
 
     componentDidMount() {
@@ -40,40 +51,74 @@ class MyLists extends React.Component {
                 <Container>
                     <h1>Minhas Listas</h1>
                     <hr />
-
+                    
                     {carrinhos.map((lista) => {
                         return (
-                            <CardGroup>
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle tag="h5">
-                                            id da lista = {lista.id}
-                                        </CardTitle>
-                                        <CardSubtitle
-                                            className="mb-2 text-muted"
-                                            tag="h6"
-                                        >
-                                            Quantidade de produtos: {lista.quantidade}
-                                        </CardSubtitle>
-                                        <CardText>
-                                            Valor total: R$ {lista.valor_total}
-                                        </CardText>
-                                        <Button>
-                                            Escolher
-                                        </Button>
-                                        <Button color="danger">
-                                            Excluir
-                                        </Button>
-                                    </CardBody>
-                                </Card>
-                        </CardGroup>
-                            
-                            )
-                        })}
+                            <Form onSubmit={this.handleSubmit}>
+                                <CardGroup>
+                                    <Card className="mb-3">
+                                        <CardBody>
+                                            <CardTitle tag="h5">
+                                                id da lista = {lista.id}
+                                            </CardTitle>
+                                            <CardSubtitle
+                                                className="mb-2 text-muted"
+                                                tag="h6"
+                                            >
+                                                Quantidade de produtos: {lista.quantidade}
+                                            </CardSubtitle>
+                                            <CardText>
+                                                Valor total: R$ {lista.valor_total}
+                                            </CardText>
+                                            <Button
+                                                id="submit" type="submit"
+                                                onClick={() => this.setLista(lista.id)}
+                                                className="m-lg-3">
+                                                Escolher
+                                            </Button>
+                                            <Button color="danger">
+                                                Excluir
+                                            </Button>
+                                        </CardBody>
+                                    </Card>
+                                </CardGroup>
+                            </Form>
+                        )
+                    })}
                 </Container>
             </>
         )
     }//fim do render
+
+    handleSubmit(e) {
+        const { id_lista } = this.state;
+        console.log(id_lista)
+        const token = getToken()
+        const options = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(this.state)
+        }
+
+        fetch(`http://localhost:5555/carrinhos/${id_lista}/adicionarProduto`, options)
+            .then(res => {
+                if (!res.ok && res.status === 401) {
+                    alert('ERRO')
+                }
+                console.log("Adicionou");
+                return res.json()
+            }).then(data => {
+                alert("Adicionou")
+                window.location.reload();
+            }).catch(err => console.log(err))
+
+        e.preventDefault()
+    }//fim do método handleSubmit
+
+
 }//fim da classe produtos
 
 

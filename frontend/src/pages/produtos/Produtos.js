@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, Container, ListGroup } from 'reactstrap';
 import { getToken } from "../../utils/auth";
+import "./produto.css"
+
 
 class Produtos extends React.Component {
     constructor(props) {
@@ -59,11 +61,12 @@ class Produtos extends React.Component {
                                 return (
 
                                     <Button
-                                        color="secondary"
-                                        outline
+                                        id="btnProduto"
+                                        className="mb-3"
+                                        color="primary"
                                         onClick={() => this.setProduto(lista.id, lista.item_name)}
                                     >
-                                        {lista.item_name}
+                                        <b>{lista.item_name}</b>
                                         {console.log(this.state.id_produto)}
                                     </Button>
                                 )
