@@ -24,7 +24,7 @@ app.use(createProduto)
 app.use("/produtos",createProduto)
 app.use("/carrinhos", carrinho)
 
-
-app.listen(5555, () => {
+const port = process.env.PORT || 5555
+app.listen(port, () => {
     console.log('servidor rodando caralho')
 })
