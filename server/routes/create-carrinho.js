@@ -102,7 +102,8 @@ router.post("/", [
 
             const newCarrinhoProduto = await CarrinhoProdutos.create({
                 carrinho_id: newCarrinho.id,
-                produtos_id: req.body.id_produtos
+                produtos_id: req.body.id_produtos,
+                quantidade: req.body.quantidade
             });
             console.log("carrinhoProduto: " + newCarrinhoProduto)
 
@@ -199,18 +200,19 @@ router.post("/:carrinho_id/adicionarProduto", [
 
             const valor_total = parseFloat(carrinho.valor_total) + parseFloat(calculateValorTotal(mercadoProduto.preco_produto, req.body.quantidade));
             console.log("valor_total fora da func: " + valor_total)
-            const quantidade = Number(carrinho.quantidade) + Number(req.body.quantidade)
+            const quantidadeProdutosNoCarrinho = Number(carrinho.quantidade) + Number(req.body.quantidade)
 
             console.log("carrinho antes" + carrinho)
             const updatedCarrinho = await carrinho.update({
-                quantidade: quantidade,
+                quantidade: quantidadeProdutosNoCarrinho,
                 valor_total: valor_total
             });
             console.log("carrinho atualizado: " + updatedCarrinho)
 
             const newCarrinhoProduto = await CarrinhoProdutos.create({
                 carrinho_id: carrinho.id,
-                produtos_id: req.body.id_produtos
+                produtos_id: req.body.id_produtos,
+                quantidade: req.body.quantidade
             });
             console.log("carrinhoProduto: " + newCarrinhoProduto)
 
@@ -218,7 +220,7 @@ router.post("/:carrinho_id/adicionarProduto", [
                 msg: 'Produto adicionado no carrinho com sucesso!',
                 carrinho: {
                     "id": updatedCarrinho.id,
-                    "quantidade": quantidade,
+                    "quantidade": quantidadeProdutosNoCarrinho,
                     "valor_total": valor_total
                 }
             })
@@ -263,7 +265,7 @@ router.get("/minhaLista", async (req, res) => {
         attributes: ['id', 'quantidade', 'valor_total'],
         include: {
             model: CarrinhoProdutos,
-            attributes: ['produtos_id'],
+            attributes: ['produtos_id', 'quantidade'],
             include: {
                 model: Produtos,
                 attributes: ['item_name']

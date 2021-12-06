@@ -19,7 +19,8 @@ const CarrinhoProdutos = conn.define('carrinho_has_produtos', {
             model: Produtos,
             key: 'id'
         }
-    }
+    },
+    quantidade: DataTypes.INTEGER
 });
 
 Produtos.hasMany(CarrinhoProdutos, { foreignKey: 'produtos_id' })
