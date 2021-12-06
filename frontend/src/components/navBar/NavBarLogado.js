@@ -3,7 +3,7 @@ import { Nav, NavItem, NavLink, Navbar, NavbarText, NavbarBrand, NavbarToggler, 
 import logo from "../../img/logo.jpg"
 import imgUsuario from "../../img/usuario.png"
 import './NavBar.css'
-import { getToken } from "../../utils/auth";
+// import { isAuth } from "../../utils/auth";
 
 
 class NavBarLogado extends React.Component {
@@ -14,26 +14,11 @@ class NavBarLogado extends React.Component {
     }
   }
 
-//   componentDidMount() {
-//     const token = getToken();
-//     const options = {
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${token}`
-//         }
-//     }
-//     fetch(`http://localhost:5555/users`, options)
-//         .then(usuario  =>
-//           usuario.json().then(data => this.setState(state => ({
-//                 usuario: data['username']})
-//                 )
-//             )
-//         )
-// }
+
 
   render() {
     // let usuario = this.state;
-
+   
     return (
       <Navbar
         color="light"

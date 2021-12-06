@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, Form, Container, Card, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import Footer from "../../components/footer/footer";
+import NavBarLogado from "../../components/navBar/NavBarLogado";
 import { getToken } from "../../utils/auth";
 
 
@@ -33,7 +35,7 @@ class MyLists extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`http://localhost:5555/carrinhos/minhalista`, options)
+        fetch(`https://backend-listar.herokuapp.com/carrinhos/minhalista`, options)
             .then(listas =>
                 listas.json().then(data => this.setState(state => ({
                     carrinhos: data['carrinhos']
@@ -47,11 +49,12 @@ class MyLists extends React.Component {
 
         return (
             <>
+            <NavBarLogado/>
                 <br /><br />
                 <Container>
                     <h1>Minhas Listas</h1>
                     <hr />
-                    
+                    <Button color="primary" className="mb-5">Criar Nova Lista</Button>
                     {carrinhos.map((lista) => {
                         return (
                             <Form onSubmit={this.handleSubmit}>
@@ -86,6 +89,7 @@ class MyLists extends React.Component {
                         )
                     })}
                 </Container>
+                <Footer/>
             </>
         )
     }//fim do render
@@ -103,7 +107,7 @@ class MyLists extends React.Component {
             body: JSON.stringify(this.state)
         }
 
-        fetch(`http://localhost:5555/carrinhos/${id_lista}/adicionarProduto`, options)
+        fetch(`https://backend-listar.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
             .then(res => {
                 if (!res.ok && res.status === 401) {
                     alert('ERRO')
