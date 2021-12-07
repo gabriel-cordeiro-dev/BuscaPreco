@@ -1,70 +1,129 @@
-// import React, { Fragment } from "react";
-// import NavBarLogado from "../../components/navBar/NavBarLogado";
-// import SearchBox from "../../components/pesquisa/SearchBox";
-// import Produtos from "../produtos/Produtos";
-// import Selecionado from "../selecionado/Selecionado";
-// import Footer from '../../components/footer/footer.js';
-// import '../../components/footer/footer.css'
-// import MyLists from "./MyLists";
-
-// class Inicio extends React.Component {
-//     constructor(props) {
-//         super(props);
-
-//         this.state = {
-//             search_box_text: "",
-//             id_produto_text: "",
-//             nome_produto_text: ""
-//         }
-//         this.searchBoxHandler = this.searchBoxHandler.bind(this);
-//         this.produtoHandler = this.produtoHandler.bind(this);
-
-//     }
-
-//     searchBoxHandler(input_text) {
-//         this.setState({
-//             search_box_text: input_text
-//         });
-//     }
-
-//     produtoHandler(id_produto, nome_produto) {
-//         console.log("dentro da página Início: " + id_produto)
-//         this.setState({
-//             id_produto_text: id_produto,
-//             nome_produto_text: nome_produto
-//         });
-//     }
-
-//     render() {
-//         const { id_produto_text } = this.state;
-
-//         if (id_produto_text <= 0) {
-//             return (
-//                 <>
-//                     <Fragment>
-//                         <NavBarLogado />
-//                         <MyLists />
-//                         <SearchBox input_text={this.searchBoxHandler} />
-//                         <Produtos
-//                             produto={this.produtoHandler} //passa as props id e nome do componente Produtos para a página Início
-//                             search_box_text={this.state.search_box_text} />
-//                     <footer><Footer/></footer>
-//                     </Fragment>
-//                 </>
-//             )//fim do return
-//         } else {
-//             return (
-//                 <>
-//                     <NavBarLogado />
-//                     <Selecionado 
-//                     nome_produto_text={this.state.nome_produto_text} //pega o state da pag inicio e passa para o componente Selecionado
-//                     id_produto_text={this.state.id_produto_text}/>
-//                     <footer><Footer/></footer>
-//                 </>
-//             )
-//         }//fim do else
-//     }//fim do render
-// }//fim da classe inicio
+import React from "react";
+import { Button, Form, Container, Card, CardImg, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import Footer from "../../components/footer/footer";
+import NavBarLogado from "../../components/navBar/NavBarLogado";
+import { getToken } from "../../utils/auth";
 
 
-// export default Inicio;
+class Listas extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            carrinhos: [],
+            id_lista: '',
+            // id_mercado: this.props.id_mercado_text,
+            // id_produtos: this.props.id_produto_text,
+            // quantidade: this.props.quantidade
+        }
+
+        this.setLista = this.setLista.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    setLista = (id_lista) => {
+        this.setState({
+            id_lista
+        })
+    }
+
+
+    componentDidMount() {
+        const token = getToken();
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        fetch(`https://backend-listar.herokuapp.com/carrinhos/minhalista`, options)
+            .then(listas =>
+                listas.json().then(data => this.setState(state => ({
+                    carrinhos: data['carrinhos']
+                })
+                ))
+            )
+    }
+
+    render() {
+        const { carrinhos } = this.state;
+
+        return (
+            <>
+                <NavBarLogado />
+                <br /><br />
+                <Container>
+                    <h1>Minhas Listas</h1>
+                    <hr />
+                    <Button color="primary" className="mb-5">Criar Nova Lista</Button>
+                    {carrinhos.map((lista) => {
+                        return (
+                            <Form onSubmit={this.handleSubmit}>
+                                <CardGroup>
+                                    <Card className="mb-3">
+                                        <CardBody>
+                                            <CardTitle tag="h5">
+                                                id da lista = {lista.id}
+                                            </CardTitle>
+                                            <CardSubtitle
+                                                className="mb-2 text-muted"
+                                                tag="h6"
+                                            >
+                                                Quantidade de produtos: {lista.quantidade}
+                                            </CardSubtitle>
+                                            <CardText>
+                                                Valor total: R$ {lista.valor_total}
+                                            </CardText>
+                                            <Button
+                                                id="submit" type="submit"
+                                                onClick={() => this.setLista(lista.id)}
+                                                className="m-lg-3">
+                                                Editar
+                                            </Button>
+                                            <Button color="danger">
+                                                Excluir
+                                            </Button>
+                                        </CardBody>
+                                    </Card>
+                                </CardGroup>
+                            </Form>
+                        )
+                    })}
+                </Container>
+                <Footer />
+            </>
+        )
+    }//fim do render
+
+    handleSubmit(e) {
+        const { id_lista } = this.state;
+        console.log(id_lista)
+        const token = getToken()
+        const options = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(this.state)
+        }
+
+        fetch(`https://backend-listar.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
+            .then(res => {
+                if (!res.ok && res.status === 401) {
+                    alert('ERRO')
+                }
+                console.log("Passou Id da lista");
+                return res.json()
+            }).then(data => {
+                alert("Adicionou")
+                window.location.reload();
+            }).catch(err => console.log(err))
+
+        e.preventDefault()
+    }//fim do método handleSubmit
+
+
+}//fim da classe produtos
+
+
+export default Listas;

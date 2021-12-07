@@ -1,80 +1,128 @@
 // import React from "react";
-// import { Button, Container, ListGroup } from 'reactstrap';
+// import { Button, Form, Container, Card, CardImg, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+// import Footer from "../../components/footer/footer";
+// import NavBarLogado from "../../components/navBar/NavBarLogado";
 // import { getToken } from "../../utils/auth";
 
-// class Produtos extends React.Component {
+
+// class Listas extends React.Component {
 //     constructor(props) {
 //         super(props)
 //         this.state = {
-//             produtosUsuario: [],
-//             produto: ''
+//             // carrinhos: [],
+//             id_lista: '',
+//             // id_mercado: this.props.id_mercado_text,
+//             // id_produtos: this.props.id_produto_text,
+//             // quantidade: this.props.quantidade
 //         }
 
-//         this.setProduto = this.setProduto.bind(this)
+//         // this.setLista = this.setLista.bind(this);
+//         // this.handleSubmit = this.handleSubmit.bind(this)
 //     }
 
-//     setProduto(id_produto, nome_produto) {
-//         this.props.produto(id_produto, nome_produto)
-//     }
+//     // setLista = (id_lista) => {
+//     //     this.setState({
+//     //         id_lista
+//     //     })
+//     // }
 
-//     componentDidMount() {
-//         const token = getToken();
-//         const options = {
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${token}`
-//             }
-//         }
-//         fetch(`http://localhost:5555/produtos/busca?item_name`, options)
-//             .then(mercados =>
-//                 mercados.json().then(data => this.setState(state => ({
-//                     produtos: data['produtos']
-//                 })
-//                 )
-//                 )
-//             )
-//     }
+
+//     // componentDidMount() {
+//     //     const token = getToken();
+//     //     const options = {
+//     //         headers: {
+//     //             'Content-Type': 'application/json',
+//     //             'Authorization': `Bearer ${token}`
+//     //         }
+//     //     }
+//     //     fetch(`https://backend-listar.herokuapp.com/carrinhos/minhalista`, options)
+//     //         .then(listas =>
+//     //             listas.json().then(data => this.setState(state => ({
+//     //                 carrinhos: data['carrinhos']
+//     //             })
+//     //             ))
+//     //         )
+//     // }
 
 //     render() {
-//         let inputText = this.props.search_box_text.toLowerCase();
-//         let produtosFiltrados = this.state.produtos.filter(
-//             produto => produto.item_name.toLowerCase().includes(inputText)
-//         );
+//         // const { carrinhos } = this.state;
 
-//         if (produtosFiltrados.length === 0) {
-//             return (
+//         return (
+//             <>
+//                 <NavBarLogado />
+//                 <br /><br />
 //                 <Container>
-//                     <br /><h1> Nenhum produto encontrado para "{inputText}"</h1>
+//                     <h1>Lista nº ID</h1>
+//                     <hr />
+//                     {/* {carrinhos.map((lista) => { */}
+//                         {/* return ( */}
+//                             <Form onSubmit={this.handleSubmit}>
+//                                 <CardGroup>
+//                                     <Card className="mb-3">
+//                                         <CardBody>
+//                                             <CardTitle tag="h5">
+//                                                 id da lista = {lista.id}
+//                                             </CardTitle>
+//                                             <CardSubtitle
+//                                                 className="mb-2 text-muted"
+//                                                 tag="h6"
+//                                             >
+//                                                 Quantidade de produtos: {lista.quantidade}
+//                                             </CardSubtitle>
+//                                             <CardText>
+//                                                 Valor total: R$ {lista.valor_total}
+//                                             </CardText>
+//                                             <Button
+//                                                 id="submit" type="submit"
+//                                                 onClick={() => this.setLista(lista.id)}
+//                                                 className="m-lg-3">
+//                                                 Editar
+//                                             </Button>
+//                                             <Button color="danger">
+//                                                 Excluir
+//                                             </Button>
+//                                         </CardBody>
+//                                     </Card>
+//                                 </CardGroup>
+//                             </Form>
+//                         )
+//                     })}
 //                 </Container>
-//             )
-//         } else {
-//             return (
-//                 <>
-//                     <br /><br />
-//                     <Container>
-//                         <h1>Produtos encontrados</h1>
-//                         <hr />
-//                         <ListGroup>
-//                             {produtosFiltrados.map((lista, index) => {
-//                                 return (
-
-//                                     <Button
-//                                         color="secondary"
-//                                         outline
-//                                         onClick={() => this.setProduto(lista.id, lista.item_name)}
-//                                     >
-//                                         {lista.item_name}
-//                                         {console.log(this.state.id_produto)}
-//                                     </Button>
-//                                 )
-//                             })}
-//                         </ListGroup>
-//                     </Container>
-//                 </>
-//             )
-//         }//fim do else
+//                 <Footer />
+//             </>
+//         )
 //     }//fim do render
+
+//     handleSubmit(e) {
+//         const { id_lista } = this.state;
+//         console.log(id_lista)
+//         const token = getToken()
+//         const options = {
+//             method: "post",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "Authorization": `Bearer ${token}`
+//             },
+//             body: JSON.stringify(this.state)
+//         }
+
+//         fetch(`https://backend-listar.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
+//             .then(res => {
+//                 if (!res.ok && res.status === 401) {
+//                     alert('ERRO')
+//                 }
+//                 console.log("Passou Id da lista");
+//                 return res.json()
+//             }).then(data => {
+//                 alert("Adicionou")
+//                 window.location.reload();
+//             }).catch(err => console.log(err))
+
+//         e.preventDefault()
+//     }//fim do método handleSubmit
+
+
 // }//fim da classe produtos
 
 
-// export default Produtos;
+// export default Listas;

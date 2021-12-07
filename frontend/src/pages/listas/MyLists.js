@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Container, Card, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import { Button, Form, Container, Card, Row, Col, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
 import Footer from "../../components/footer/footer";
 import NavBarLogado from "../../components/navBar/NavBarLogado";
 import { getToken } from "../../utils/auth";
@@ -49,47 +49,42 @@ class MyLists extends React.Component {
 
         return (
             <>
-            <NavBarLogado/>
-                <br /><br />
                 <Container>
-                    <h1>Minhas Listas</h1>
+                    <Button color="primary" className="mb-3 mt-5">Criar Nova Lista</Button>
                     <hr />
-                    <Button color="primary" className="mb-5">Criar Nova Lista</Button>
+                    <h2 className="mb-4 mt-4">Selecionar uma lista</h2>
+                    <hr />
+
                     {carrinhos.map((lista) => {
                         return (
                             <Form onSubmit={this.handleSubmit}>
-                                <CardGroup>
-                                    <Card className="mb-3">
-                                        <CardBody>
-                                            <CardTitle tag="h5">
-                                                id da lista = {lista.id}
-                                            </CardTitle>
-                                            <CardSubtitle
-                                                className="mb-2 text-muted"
-                                                tag="h6"
-                                            >
-                                                Quantidade de produtos: {lista.quantidade}
-                                            </CardSubtitle>
-                                            <CardText>
-                                                Valor total: R$ {lista.valor_total}
-                                            </CardText>
-                                            <Button
-                                                id="submit" type="submit"
-                                                onClick={() => this.setLista(lista.id)}
-                                                className="m-lg-3">
-                                                Escolher
-                                            </Button>
-                                            <Button color="danger">
-                                                Excluir
-                                            </Button>
-                                        </CardBody>
-                                    </Card>
-                                </CardGroup>
+                                <Card className="mb-3">
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            id da lista = {lista.id}
+                                        </CardTitle>
+                                        <CardSubtitle
+                                            className="mb-2 text-muted"
+                                            tag="h6"
+                                        >
+                                            Quantidade de produtos: {lista.quantidade}
+                                        </CardSubtitle>
+                                        <CardText>
+                                            Valor total: R$ {lista.valor_total}
+                                        </CardText>
+                                        <Button
+                                            id="submit" type="submit"
+                                            onClick={() => this.setLista(lista.id)}
+                                            className="m-lg-3">
+                                            Escolher
+                                        </Button>
+                                    </CardBody>
+                                </Card>
                             </Form>
                         )
                     })}
                 </Container>
-                <Footer/>
+                <Footer />
             </>
         )
     }//fim do render

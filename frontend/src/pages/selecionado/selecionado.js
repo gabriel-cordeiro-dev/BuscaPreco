@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Alert, Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
 import { getToken } from "../../utils/auth";
 import MyLists from "../listas/MyLists";
 

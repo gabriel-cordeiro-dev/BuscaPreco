@@ -1,7 +1,7 @@
 import React from 'react'
 import Footer from '../../components/footer/footer.js';
 import NavBarLock from '../../components/navBar/NavBarLock.js';
-import { isAuth } from "../../utils/auth";
+import { getToken } from "../../utils/auth";
 import Carousel from '../../components/carousel/carousel';
 import NavBarLogado from '../../components/navBar/NavBarLogado.js';
 
@@ -12,10 +12,9 @@ class Home extends React.Component {
     }
 
     render() {
+        const token = getToken();
 
-        const Autenticado = isAuth();
-
-        if (Autenticado) {
+        if (token !== null) {
             return (
                 <>
                     <NavBarLogado />
