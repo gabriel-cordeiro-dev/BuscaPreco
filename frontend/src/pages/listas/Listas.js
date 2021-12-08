@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, Form, Container, Card, CardImg, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import { Button, Container, Card, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
 import Footer from "../../components/footer/footer";
 import NavBarLogado from "../../components/navBar/NavBarLogado";
 import { getToken } from "../../utils/auth";
+import MyList from "./MyList";
 
 
 class Listas extends React.Component {
@@ -11,21 +12,24 @@ class Listas extends React.Component {
         this.state = {
             carrinhos: [],
             id_lista: '',
+            index: ''
             // id_mercado: this.props.id_mercado_text,
             // id_produtos: this.props.id_produto_text,
             // quantidade: this.props.quantidade
         }
 
         this.setLista = this.setLista.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    setLista = (id_lista) => {
+    setLista = (id_lista, index) => {
+        console.log("Id da lista = "+id_lista)
+        console.log("index = "+index)
+
         this.setState({
-            id_lista
+            id_lista,
+            index
         })
     }
-
 
     componentDidMount() {
         const token = getToken();
@@ -35,7 +39,7 @@ class Listas extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://backend-listar.herokuapp.com/carrinhos/minhalista`, options)
+        fetch(`https://listarapplication.herokuapp.com/carrinhos/minhalista`, options)
             .then(listas =>
                 listas.json().then(data => this.setState(state => ({
                     carrinhos: data['carrinhos']
@@ -45,22 +49,24 @@ class Listas extends React.Component {
     }
 
     render() {
-        const { carrinhos } = this.state;
+        const { carrinhos, index } = this.state;
 
-        return (
-            <>
-                <NavBarLogado />
-                <br /><br />
-                <Container>
-                    <h1>Minhas Listas</h1>
-                    <hr />
-                    <Button color="primary" className="mb-5">Criar Nova Lista</Button>
-                    {carrinhos.map((lista) => {
-                        return (
-                            <Form onSubmit={this.handleSubmit}>
+        if (index <= 0) {
+            return (
+                <>
+                    <NavBarLogado />
+                    <br /><br />
+                    <Container>
+                        <h1>Minhas Listas</h1>
+                        <hr />
+                        {carrinhos.map((lista, index) => {
+                            return (
                                 <CardGroup>
                                     <Card className="mb-3">
                                         <CardBody>
+                                            <CardTitle key={index} tag="h3">
+                                                index = {index+1}
+                                            </CardTitle>
                                             <CardTitle tag="h5">
                                                 id da lista = {lista.id}
                                             </CardTitle>
@@ -74,8 +80,7 @@ class Listas extends React.Component {
                                                 Valor total: R$ {lista.valor_total}
                                             </CardText>
                                             <Button
-                                                id="submit" type="submit"
-                                                onClick={() => this.setLista(lista.id)}
+                                                onClick={() => this.setLista(lista.id, index+1)}
                                                 className="m-lg-3">
                                                 Editar
                                             </Button>
@@ -85,43 +90,24 @@ class Listas extends React.Component {
                                         </CardBody>
                                     </Card>
                                 </CardGroup>
-                            </Form>
-                        )
-                    })}
-                </Container>
-                <Footer />
-            </>
-        )
-    }//fim do render
+                            )
+                        })}
+                    </Container>
+                    <Footer />
+                </>
+            )//fim do 1º return
+        } else {
+            return (
+                <>
+                    <MyList
+                        id_lista_text={this.state.id_lista}
+                        index_text={this.state.index}
+                    />
 
-    handleSubmit(e) {
-        const { id_lista } = this.state;
-        console.log(id_lista)
-        const token = getToken()
-        const options = {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify(this.state)
+                </>
+            )
         }
-
-        fetch(`https://backend-listar.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
-            .then(res => {
-                if (!res.ok && res.status === 401) {
-                    alert('ERRO')
-                }
-                console.log("Passou Id da lista");
-                return res.json()
-            }).then(data => {
-                alert("Adicionou")
-                window.location.reload();
-            }).catch(err => console.log(err))
-
-        e.preventDefault()
-    }//fim do método handleSubmit
-
+    }//fim do render
 
 }//fim da classe produtos
 

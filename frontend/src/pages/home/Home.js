@@ -1,9 +1,7 @@
 import React from 'react'
 import Footer from '../../components/footer/footer.js';
 import NavBarLock from '../../components/navBar/NavBarLock.js';
-import { getToken } from "../../utils/auth";
 import Carousel from '../../components/carousel/carousel';
-import NavBarLogado from '../../components/navBar/NavBarLogado.js';
 
 class Home extends React.Component {
     constructor(props) {
@@ -12,26 +10,14 @@ class Home extends React.Component {
     }
 
     render() {
-        const token = getToken();
 
-        if (token !== null) {
-            return (
-                <>
-                    <NavBarLogado />
-                    <Carousel />
-                    <Footer />
-                </>
-            )
-        }
-        else {
-            return (
-                <>
-                    <NavBarLock />
-                    <Carousel />
-                    <Footer />
-                </>
-            )
-        }
+        return (
+            <>
+                <NavBarLock />
+                <Carousel />
+                <Footer />
+            </>
+        )
     }
 }
 

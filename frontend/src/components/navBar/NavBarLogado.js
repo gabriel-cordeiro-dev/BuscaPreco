@@ -3,8 +3,6 @@ import { Nav, NavItem, NavLink, Navbar, NavbarText, NavbarBrand, NavbarToggler, 
 import logo from "../../img/logo.jpg"
 import imgUsuario from "../../img/usuario.png"
 import './NavBar.css'
-// import { isAuth } from "../../utils/auth";
-
 
 class NavBarLogado extends React.Component {
   constructor(props) {
@@ -13,8 +11,6 @@ class NavBarLogado extends React.Component {
       usuario: ''
     }
   }
-
-
 
   render() {
     // let usuario = this.state;
@@ -50,13 +46,13 @@ class NavBarLogado extends React.Component {
               <img id="imgUsuario" src={imgUsuario} />
             </NavLink>
           </NavbarText>
-          <NavLink>
+          <NavLink href="/">
             {/* {usuario.map((usuario) => {
               return(
                 <h4>{usuario.username}</h4>
               )
             })} */}
-            Nome do usuário
+            <u>Sair</u>
           </NavLink>
         </Collapse>
       </Navbar>

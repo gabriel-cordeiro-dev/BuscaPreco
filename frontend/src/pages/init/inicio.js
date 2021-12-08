@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import NavBarLogado from "../../components/navBar/NavBarLogado";
 import SearchBox from "../../components/pesquisa/SearchBox";
 import Produtos from "../produtos/Produtos";
-import Selecionado from "../selecionado/Selecionado";
+import Selecionado from "../selecionado/selecionado.js";
 import Footer from '../../components/footer/footer.js';
 import '../../components/footer/footer.css'
 
