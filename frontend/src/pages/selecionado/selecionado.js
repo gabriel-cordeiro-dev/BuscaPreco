@@ -40,7 +40,7 @@ class Selecionado extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://listarapplication.herokuapp.com/produtos/${id_produto}`, options)
+        fetch(`https://listar-application.herokuapp.com/produtos/${id_produto}`, options)
             .then(mercados =>
                 mercados.json().then(data => this.setState(state => ({
                     mercados: data['mercado_has_produtos']

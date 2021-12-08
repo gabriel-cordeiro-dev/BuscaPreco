@@ -33,7 +33,7 @@ class MyLists extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://listarapplication.herokuapp.com/carrinhos/minhalista`, options)
+        fetch(`https://listar-application.herokuapp.com/carrinhos/minhalista`, options)
             .then(listas =>
                 listas.json().then(data => this.setState(state => ({
                     carrinhos: data['carrinhos']
@@ -134,7 +134,7 @@ class MyLists extends React.Component {
             body: JSON.stringify(this.state)
         }
 
-        fetch(`https://listarapplication.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
+        fetch(`https://listar-application.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
             .then(res => {
                 if (!res.ok && res.status === 401) {
                     alert('ERRO')
@@ -161,7 +161,7 @@ class MyLists extends React.Component {
             body: JSON.stringify(this.state)
         }
 
-        fetch(`https://listarapplication.herokuapp.com/carrinhos`, options)
+        fetch(`https://listar-application.herokuapp.com/carrinhos`, options)
             .then(res => {
                 if (!res.ok && res.status === 401) {
                     alert('ERRO')

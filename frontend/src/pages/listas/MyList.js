@@ -27,7 +27,7 @@ class MyList extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://listarapplication.herokuapp.com/carrinhos/minhalista`, options)
+        fetch(`https://listar-application.herokuapp.com/carrinhos/minhalista`, options)
             .then(listas =>
                 listas.json().then(data => this.setState(state => ({
                     carrinhos: data['carrinhos']
