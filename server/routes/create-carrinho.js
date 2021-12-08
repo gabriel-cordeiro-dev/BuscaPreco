@@ -281,7 +281,33 @@ router.get("/minhaLista", async (req, res) => {
     }
 
     console.log("meu carrinho: " + listaCarrinho)
-    res.json({carrinhos: listaCarrinho});
+    res.json({ carrinhos: listaCarrinho });
+});
+
+router.delete("/:carrinho_id", async (req, res) => {
+    let userId = getUserIdFromTokem(req, res)
+
+    await Carrinho.destroy({
+        where: {
+            id: req.params.carrinho_id
+        }
+    })
+
+    res.json({ msg: 'carrinho deletado com sucesso' });
+});
+
+
+router.delete("/:carrinho_id/produtos/:produto_id", async (req, res) => {
+    let userId = getUserIdFromTokem(req, res)
+
+    await CarrinhoProdutos.destroy({
+        where: {
+            carrinho_id: req.params.carrinho_id,
+            produtos_id: req.params.produto_id
+        }
+    })
+
+    res.json({ msg: 'produto deletado do carrinho com sucesso' });
 });
 
 module.exports = router;
