@@ -348,7 +348,7 @@ router.get("/:carrinho_id", async (req, res) => {
 
     res.json(obj);
 });
-
+// deletar carrinho
 router.delete("/:carrinho_id", async (req, res) => {
     let userId = getUserIdFromTokem(req, res)
     const { carrinho_id, produto_id } = req.params
