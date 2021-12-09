@@ -1,6 +1,8 @@
 import React from "react";
 import { Alert, Button, Form, Container, Card, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap';
 import { getToken } from "../../utils/auth";
+import "./listas.css"
+
 
 
 class MyLists extends React.Component {
@@ -87,13 +89,13 @@ class MyLists extends React.Component {
                         <h2 className="mb-4 mt-4">Selecionar uma lista</h2>
                         <hr />
 
-                        {carrinhos.map((lista) => {
+                        {carrinhos.map((lista, index) => {
                             return (
                                 <Form onSubmit={this.handleSubmit}>
-                                    <Card className="mb-3">
+                                    <Card id="cardEdit" className="mb-3">
                                         <CardBody>
-                                            <CardTitle tag="h5">
-                                                id da lista = {lista.id}
+                                            <CardTitle key={index} tag="h5">
+                                                Lista nº = {index+1}
                                             </CardTitle>
                                             <CardSubtitle
                                                 className="mb-2 text-muted"
@@ -105,7 +107,7 @@ class MyLists extends React.Component {
                                                 Valor total: R$ {lista.valor_total}
                                             </CardText>
                                             <Button
-                                                id="submit" type="submit"
+                                                id="btnEscolher" type="submit"
                                                 onClick={() => this.setLista(lista.id)}
                                                 className="m-lg-3">
                                                 Escolher

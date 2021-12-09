@@ -62,8 +62,8 @@ class Produtos extends React.Component {
 
                                     <Button
                                         id="btnProduto"
-                                        className="mb-3"
-                                        color="primary"
+                                        className="mb-4"
+                                        color="secondary"
                                         onClick={() => this.setProduto(lista.id, lista.item_name)}
                                     >
                                         <b>{lista.item_name}</b>

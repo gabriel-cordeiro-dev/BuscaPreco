@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
 import { getToken } from "../../utils/auth";
 import MyLists from "../listas/MyLists";
+import "./selecionado.css"
+
 
 class Selecionado extends React.Component {
     constructor(props) {
@@ -88,11 +90,12 @@ class Selecionado extends React.Component {
                                                     </td>
                                                     <td>
                                                         <Col sm={2}>
-                                                            <Input sm={10} type="number" name="quantidade" onChange={this.handleChange}></Input>
+                                                            <Input id="inputQtd" sm={10} type="number" name="quantidade" onChange={this.handleChange}></Input>
                                                         </Col>
                                                     </td>
                                                     <td>
                                                         <Button
+                                                            id="btnAdd"
                                                             onClick={() => this.setIds(mercados.mercado.id)}>
                                                             Adicionar
                                                         </Button>

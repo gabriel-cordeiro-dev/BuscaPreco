@@ -1,15 +1,15 @@
 import React from "react";
-import { Button, Form, Container, Card, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import { Button, Table, Col, Form, Container, Input, Card, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
 import Footer from "../../components/footer/footer";
 import NavBarLogado from "../../components/navBar/NavBarLogado";
 import { getToken } from "../../utils/auth";
-
+import "./listas.css"
 
 class MyList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            carrinhos: [],
+            carrinho: [],
             id_lista: this.props.id_lista_text,
             ind_array: this.props.index_text,
             // id_mercado: this.props.id_mercado_text,
@@ -20,6 +20,7 @@ class MyList extends React.Component {
     }
 
     componentDidMount() {
+        const id_lista = this.props.id_lista_text;
         const token = getToken();
         const options = {
             headers: {
@@ -27,63 +28,89 @@ class MyList extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://listar-application.herokuapp.com/carrinhos/minhalista`, options)
-            .then(listas =>
-                listas.json().then(data => this.setState(state => ({
-                    carrinhos: data['carrinhos']
+        fetch(`https://listar-application.herokuapp.com/carrinhos/${id_lista}`, options)
+            .then(carrinho =>
+                carrinho.json().then(data => this.setState(state => ({
+                    carrinho: data['carrinho_has_produtos']
                 })
                 ))
             )
     }
 
     render() {
-        const { carrinhos } = this.state;
+        const { carrinho, ind_array } = this.state;
 
         return (
             <>
                 <NavBarLogado />
                 <br /><br />
-                <Container>
-                    <h1>Lista nº ID</h1>
-                    <hr />
-                    {carrinhos.map((lista) => {
-                        return ( 
-                            <Form onSubmit={this.handleSubmit}>
-                                <CardGroup>
-                                    <Card className="mb-3">
-                                        <CardBody>
-                                            <CardTitle tag="h5">
-                                                id da lista = {lista.id}
-                                            </CardTitle>
-                                            <CardSubtitle
-                                                className="mb-2 text-muted"
-                                                tag="h6"
-                                            >
-                                                Quantidade de produtos: {lista.quantidade}
-                                            </CardSubtitle>
-                                            <CardText>
-                                                Valor total: R$ {lista.valor_total}
-                                            </CardText>
+                <Container id="container">
+                    <h1>Lista nº {ind_array}</h1>
+                    <br />
+                    <Table id="table" row hover responsive>
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Alterar Qtd</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {carrinho.map((lista) => {
+                                return (
+                                    <tr>
+                                        <td>{lista.produto.item_name}</td>
+                                        <td>{lista.quantidade}</td>
+                                        <td>
+                                            <Col sm={2}>
+                                                <Input sm={10} type="number" name="quantidade" onChange={this.handleChange}> {lista.quantidade}</Input>
+                                            </Col>
+                                        </td>
+                                        <td>
                                             <Button
-                                                id="submit" type="submit"
-                                                onClick={() => this.setLista(lista.id)}
-                                                className="m-lg-3">
-                                                Editar
+                                                onClick={() => this.handleDelete(lista.produtos_id)}
+                                                color="danger"
+                                            >
+                                                Remover
                                             </Button>
-                                            <Button color="danger">
-                                                Excluir
-                                            </Button>
-                                        </CardBody>
-                                    </Card>
-                                </CardGroup>
-                            </Form>
-                        )
-                    })}
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
                 </Container>
-                <Footer />
+                <footer><Footer /></footer>
             </>
         )
     }//fim do render
+
+    handleDelete(id_produto) {
+        const id_lista = this.props.id_lista_text;
+        const token = getToken()
+        const options = {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(this.state)
+        }
+        if (window.confirm("Deseja realmente excluir este Produto?")) {
+            fetch(`https://listar-application.herokuapp.com/carrinhos/${id_lista}/produtos/${id_produto}`, options)
+                .then(res => {
+                    if (!res.ok && res.status === 401) {
+                        alert('ERRO')
+                    }
+                    console.log("ERROUU");
+                    return res.json()
+                }).then(data => {
+                    alert("Produto deletado com sucesso!")
+                    window.location.reload();
+                }).catch(err => console.log(err))
+        }
+
+    }//fim do método handleSubmit
 
 }//fim da classe Mylist
 

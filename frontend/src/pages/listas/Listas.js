@@ -4,6 +4,8 @@ import Footer from "../../components/footer/footer";
 import NavBarLogado from "../../components/navBar/NavBarLogado";
 import { getToken } from "../../utils/auth";
 import MyList from "./MyList";
+import "./listas.css"
+
 
 
 class Listas extends React.Component {
@@ -13,22 +15,18 @@ class Listas extends React.Component {
             carrinhos: [],
             id_lista: '',
             index: ''
-            // id_mercado: this.props.id_mercado_text,
-            // id_produtos: this.props.id_produto_text,
-            // quantidade: this.props.quantidade
         }
 
         this.setLista = this.setLista.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+
     }
 
     setLista = (id_lista, index) => {
-        console.log("Id da lista = "+id_lista)
-        console.log("index = "+index)
-
         this.setState({
             id_lista,
             index
-        })
+        });
     }
 
     componentDidMount() {
@@ -62,29 +60,25 @@ class Listas extends React.Component {
                         {carrinhos.map((lista, index) => {
                             return (
                                 <CardGroup>
-                                    <Card className="mb-3">
+                                    <Card id="cardEdit" className="mb-3">
                                         <CardBody>
                                             <CardTitle key={index} tag="h3">
-                                                index = {index+1}
+                                                Lista nº {index + 1}
                                             </CardTitle>
                                             <CardTitle tag="h5">
-                                                id da lista = {lista.id}
+                                            Quantidade de produtos: {lista.quantidade}
                                             </CardTitle>
-                                            <CardSubtitle
-                                                className="mb-2 text-muted"
-                                                tag="h6"
-                                            >
-                                                Quantidade de produtos: {lista.quantidade}
-                                            </CardSubtitle>
                                             <CardText>
                                                 Valor total: R$ {lista.valor_total}
                                             </CardText>
                                             <Button
-                                                onClick={() => this.setLista(lista.id, index+1)}
+                                                onClick={() => this.setLista(lista.id, index + 1)}
                                                 className="m-lg-3">
                                                 Editar
                                             </Button>
-                                            <Button color="danger">
+                                            <Button
+                                                onClick={() => this.handleDelete(lista.id)}
+                                                color="danger">
                                                 Excluir
                                             </Button>
                                         </CardBody>
@@ -108,6 +102,32 @@ class Listas extends React.Component {
             )
         }
     }//fim do render
+
+    handleDelete(id_lista) {
+        const token = getToken()
+        const options = {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(this.state)
+        }
+        if (window.confirm("Deseja realmente excluir esta lista?")) {
+            fetch(`https://listar-application.herokuapp.com/carrinhos/${id_lista}`, options)
+                .then(res => {
+                    if (!res.ok && res.status === 401) {
+                        alert('ERRO')
+                    }
+                    console.log("ERROUU");
+                    return res.json()
+                }).then(data => {
+                    alert("Lista deletada com sucesso!")
+                    window.location.reload();
+                }).catch(err => console.log(err))
+        }
+
+    }//fim do método handleSubmit
 
 }//fim da classe produtos
 
