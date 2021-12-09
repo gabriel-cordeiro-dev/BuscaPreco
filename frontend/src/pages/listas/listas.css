@@ -26,4 +26,11 @@ h2{
     background-image: url(../../img/textura2.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    text-align: center;
+}
+
+#colQtd{
+    text-align: center;
+    vertical-align: center;
+    width: 100px;
 }

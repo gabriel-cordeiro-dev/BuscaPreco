@@ -4,7 +4,7 @@ import Home from '../pages/home/Home.js'
 import inicio from '../pages/init/inicio.js'
 import Listas from '../pages/listas/Listas.js'
 import Login from '../pages/login/Login.js'
-import Registro from '../pages/registro/Registro.js'
+import Registro from '../pages/registro/registro.js'
 
 const Routes = () => (
     <BrowserRouter>

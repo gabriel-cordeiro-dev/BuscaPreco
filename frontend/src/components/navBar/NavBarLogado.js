@@ -4,6 +4,7 @@ import logo from "../../img/logo.png"
 import imgUsuario from "../../img/usuario.png"
 import './NavBar.css'
 
+
 class NavBarLogado extends React.Component {
   constructor(props) {
     super(props)
@@ -14,7 +15,7 @@ class NavBarLogado extends React.Component {
 
   render() {
     // let usuario = this.state;
-   
+
     return (
       <Navbar
         className="mb-4"
@@ -22,8 +23,8 @@ class NavBarLogado extends React.Component {
         expand="md"
         light
       >
-        <NavbarBrand className="m-lg-3" href="/">
-          Início
+        <NavbarBrand  href="/">
+          <img id="navLogo" src={logo} />
         </NavbarBrand>
         <NavbarToggler onClick={function noRefCheck() { }} />
         <Collapse navbar>

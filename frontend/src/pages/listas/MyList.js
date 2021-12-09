@@ -12,12 +12,18 @@ class MyList extends React.Component {
             carrinho: [],
             id_lista: this.props.id_lista_text,
             ind_array: this.props.index_text,
-            // id_mercado: this.props.id_mercado_text,
-            // id_produtos: this.props.id_produto_text,
-            // quantidade: this.props.quantidade
+            // id_mercado: '',
+            quantidade: this.props.quantidade_text,
+            valor_total: this.props.valor_text,
         }
-
+        // this.setMercado = this.setMercado.bind(this);
     }
+    
+    // setMercado = (mercado) => {
+    //     this.setState({
+    //         id_mercado: mercado
+    //     });
+    // }
 
     componentDidMount() {
         const id_lista = this.props.id_lista_text;
@@ -38,7 +44,7 @@ class MyList extends React.Component {
     }
 
     render() {
-        const { carrinho, ind_array } = this.state;
+        const { carrinho, ind_array, quantidade, valor_total } = this.state;
 
         return (
             <>
@@ -51,21 +57,35 @@ class MyList extends React.Component {
                         <thead>
                             <tr>
                                 <th>Produto</th>
-                                <th>Quantidade</th>
-                                <th>Alterar Qtd</th>
+                                <th>
+                                    <Col sm={3}>
+                                        Quantidade
+                                    </Col>
+                                </th>
+                                <th> </th>
                             </tr>
                         </thead>
                         <tbody>
                             {carrinho.map((lista) => {
                                 return (
+                                        
                                     <tr>
-                                        <td>{lista.produto.item_name}</td>
+                                        {/* {this.setMercado(lista.id_mercado)} */}
+                                        <td>{lista.nome_produto}</td>
                                         <td>{lista.quantidade}</td>
-                                        <td>
-                                            <Col sm={2}>
-                                                <Input sm={10} type="number" name="quantidade" onChange={this.handleChange}> {lista.quantidade}</Input>
+                                        {/* <td >
+                                            <Col>
+                                                <Input id="colQtd"  type="number" name="quantidade" onChange={this.handleChange}> {lista.quantidade}</Input>
                                             </Col>
-                                        </td>
+                                        </td> */}
+                                        {/* <td>
+                                            <Button
+                                                onClick={() => this.handleEdit(lista.produtos_id, lista.id_mercado)}
+                                                color="warning"
+                                            >
+                                                Alterar Qtd
+                                            </Button>
+                                        </td> */}
                                         <td>
                                             <Button
                                                 onClick={() => this.handleDelete(lista.produtos_id)}
@@ -77,6 +97,15 @@ class MyList extends React.Component {
                                     </tr>
                                 )
                             })}
+                            <tr>
+                                <td>
+                                    <b>TOTAL = R$ {valor_total}</b>
+                                </td>
+                                <td>
+                                    <b>{quantidade}</b>
+                                </td>
+                                
+                            </tr>
                         </tbody>
                     </Table>
                 </Container>
@@ -109,8 +138,39 @@ class MyList extends React.Component {
                     window.location.reload();
                 }).catch(err => console.log(err))
         }
+    }//fim do método handleDelete
 
-    }//fim do método handleSubmit
+    // handleEdit(id_produto) {
+    //     const id_lista = this.props.id_lista_text;
+    //     const id_mercado = this.state;
+
+    //     alert("id_mercado = "+id_mercado)
+
+    //     const token = getToken()
+    //     const options = {
+    //         method: 'DELETE',
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": `Bearer ${token}`
+    //         },
+    //         body: JSON.stringify(this.state)
+    //     }
+    //     if (window.confirm("Deseja realmente modificar este Produto?")) {
+    //         fetch(`https://listar-application.herokuapp.com/carrinhos/${id_lista}/produtos/${id_produto}`, options)
+    //             .then(res => {
+    //                 if (!res.ok && res.status === 401) {
+    //                     alert('ERRO')
+    //                 }
+    //                 console.log("ERROUU");
+    //                 return res.json()
+    //             }).then(data => {
+    //                 alert("Produto deletado com sucesso!")
+    //                 window.location.reload();
+    //             }).catch(err => console.log(err))
+    //     }
+    // }//fim do método handleEdit
+
+
 
 }//fim da classe Mylist
 

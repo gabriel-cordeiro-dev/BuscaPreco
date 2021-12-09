@@ -14,7 +14,9 @@ class Listas extends React.Component {
         this.state = {
             carrinhos: [],
             id_lista: '',
-            index: ''
+            index: '',
+            quantidade:'',
+            valor_total:''
         }
 
         this.setLista = this.setLista.bind(this);
@@ -22,10 +24,12 @@ class Listas extends React.Component {
 
     }
 
-    setLista = (id_lista, index) => {
+    setLista = (id_lista, index, quantidade, valor_total) => {
         this.setState({
             id_lista,
-            index
+            index,
+            quantidade,
+            valor_total
         });
     }
 
@@ -72,7 +76,7 @@ class Listas extends React.Component {
                                                 Valor total: R$ {lista.valor_total}
                                             </CardText>
                                             <Button
-                                                onClick={() => this.setLista(lista.id, index + 1)}
+                                                onClick={() => this.setLista(lista.id, index + 1, lista.quantidade, lista.valor_total)}
                                                 className="m-lg-3">
                                                 Editar
                                             </Button>
@@ -96,6 +100,8 @@ class Listas extends React.Component {
                     <MyList
                         id_lista_text={this.state.id_lista}
                         index_text={this.state.index}
+                        quantidade_text={this.state.quantidade}
+                        valor_text={this.state.valor_total}
                     />
 
                 </>
