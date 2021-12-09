@@ -103,7 +103,8 @@ router.post("/", [
             const newCarrinhoProduto = await CarrinhoProdutos.create({
                 carrinho_id: newCarrinho.id,
                 produtos_id: req.body.id_produtos,
-                quantidade: req.body.quantidade
+                quantidade: req.body.quantidade,
+                mercado_id: mercado.id
             });
             console.log("carrinhoProduto: " + newCarrinhoProduto)
 
@@ -198,6 +199,22 @@ router.post("/:carrinho_id/adicionarProduto", [
                 })
             }
 
+            const carrinhoProdutos = await CarrinhoProdutos.findOne({
+                attributes: ['carrinho_id', 'produtos_id'],
+                where: {
+                    carrinho_id: carrinho_id,
+                    produtos_id: req.body.id_produtos
+                }
+            });
+            console.log("carrinhoProdutos: " + carrinhoProdutos)
+
+            if (carrinhoProdutos) {
+                console.log("produto já inserido no carrinho");
+                return res.status(400).json({
+                    err: 'produto já inserido no carrinho'
+                })
+            }
+
             const valor_total = parseFloat(carrinho.valor_total) + parseFloat(calculateValorTotal(mercadoProduto.preco_produto, req.body.quantidade));
             console.log("valor_total fora da func: " + valor_total)
             const quantidadeProdutosNoCarrinho = Number(carrinho.quantidade) + Number(req.body.quantidade)
@@ -212,7 +229,8 @@ router.post("/:carrinho_id/adicionarProduto", [
             const newCarrinhoProduto = await CarrinhoProdutos.create({
                 carrinho_id: carrinho.id,
                 produtos_id: req.body.id_produtos,
-                quantidade: req.body.quantidade
+                quantidade: req.body.quantidade,
+                mercado_id: mercado.id
             });
             console.log("carrinhoProduto: " + newCarrinhoProduto)
 
@@ -295,14 +313,13 @@ router.get("/:carrinho_id", async (req, res) => {
         },
         include: {
             model: CarrinhoProdutos,
-            attributes: ['produtos_id', 'quantidade'],
+            attributes: ['produtos_id', 'quantidade', 'mercado_id'],
             include: {
                 model: Produtos,
                 attributes: ['item_name']
             }
         }
     });
-    console.log("carrinho: " + carrinho)
 
     if (!carrinho) {
         console.log("carrinho não foi encontrado");
@@ -311,8 +328,25 @@ router.get("/:carrinho_id", async (req, res) => {
         })
     }
 
-    console.log("meu carrinho: " + carrinho)
-    res.json({ carrinho });
+    let obj = {
+        id: carrinho.id,
+        quantidade: carrinho.quantidade,
+        valor_total: carrinho.valor_total,
+        carrinho_has_produtos: []
+    }
+
+    carrinho.carrinho_has_produtos.forEach(lista => {
+        let objOrder = {
+            id_produto: lista.produtos_id,
+            nome_produto: lista.produto.item_name,
+            quantidade: lista.quantidade,
+            id_mercado: lista.mercado_id
+        }
+
+        obj.carrinho_has_produtos.push(objOrder)
+    })
+
+    res.json(obj);
 });
 
 router.delete("/:carrinho_id", async (req, res) => {

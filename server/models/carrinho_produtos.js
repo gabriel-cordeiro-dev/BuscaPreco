@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize')
 const Carrinho = require("../models/carrinho")
 const Produtos = require('../models/produtos')
+const Mercado = require('../models/mercado')
 const conn = require('../db')
 
 const CarrinhoProdutos = conn.define('carrinho_has_produtos', {
@@ -20,9 +21,17 @@ const CarrinhoProdutos = conn.define('carrinho_has_produtos', {
             key: 'id'
         }
     },
-    quantidade: DataTypes.INTEGER
+    quantidade: DataTypes.INTEGER,
+    mercado_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Mercado,
+            key: 'id'
+        }
+    }
 });
 
+Mercado.hasMany(CarrinhoProdutos, { foreignKey: 'mercado_id' })
 Produtos.hasMany(CarrinhoProdutos, { foreignKey: 'produtos_id' })
 CarrinhoProdutos.belongsTo(Produtos, { foreignKey: 'produtos_id' })
 
