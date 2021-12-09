@@ -351,10 +351,25 @@ router.get("/:carrinho_id", async (req, res) => {
 
 router.delete("/:carrinho_id", async (req, res) => {
     let userId = getUserIdFromTokem(req, res)
+    const { carrinho_id, produto_id } = req.params
+
+    const carrinho = await Carrinho.findOne({
+        attributes: ['id', 'quantidade', 'valor_total'],
+        where: {
+            id: carrinho_id
+        }
+    });
+
+    if (!carrinho) {
+        console.log("carrinho não foi encontrado");
+        return res.status(400).json({
+            err: 'carrinho não foi encontrado'
+        })
+    }
 
     await Carrinho.destroy({
         where: {
-            id: req.params.carrinho_id
+            id: carrinho_id
         }
     })
 
@@ -365,10 +380,87 @@ router.delete("/:carrinho_id", async (req, res) => {
 router.delete("/:carrinho_id/produtos/:produto_id", async (req, res) => {
     let userId = getUserIdFromTokem(req, res)
 
+    const { carrinho_id, produto_id } = req.params
+
+    const carrinho = await Carrinho.findOne({
+        attributes: ['id', 'quantidade', 'valor_total'],
+        where: { id: carrinho_id }
+    });
+    if (!carrinho) {
+        console.log("carrinho não foi encontrado");
+        return res.status(400).json({
+            err: 'carrinho não foi encontrado'
+        })
+    }
+
+    const produto = await Produtos.findOne({
+        where: { id: produto_id }
+    });
+    if (!produto) {
+        console.log("produto não encontrado");
+        return res.status(400).json({
+            err: 'Produto não encontrado'
+        })
+    }
+
+    const carrinhoProdutos = await CarrinhoProdutos.findOne({
+        attributes: ['carrinho_id', 'produtos_id', 'quantidade', 'mercado_id'],
+        where: {
+            carrinho_id: carrinho_id,
+            produtos_id: produto_id
+        }
+    });
+    if (!carrinhoProdutos) {
+        console.log("produto informado não está inserido no carrinho");
+        return res.status(400).json({
+            err: 'produto informado não está inserido no carrinho'
+        })
+    }
+
+    const mercado = await Mercado.findOne({
+        attributes: ['id', 'mercado_nome'],
+        where: { id: carrinhoProdutos.mercado_id }
+    });
+    if (!mercado) {
+        console.log("mercado não encontrado");
+        return res.status(400).json({
+            err: 'Mercado não encontrado'
+        })
+    }
+
+    const mercadoProduto = await MercadoProdutos.findOne({
+        attributes: ['mercado_id', 'produtos_id', 'preco_produto'],
+        where: {
+            mercado_id: mercado.id,
+            produtos_id: produto_id
+        }
+    });
+    if (!mercadoProduto) {
+        console.log("produto no mercado não foi encontrado");
+        return res.status(400).json({
+            err: 'produto no mercado não foi encontrado'
+        })
+    }
+
+    console.log("valor total do carrinho" + carrinho.valor_total)
+    console.log("quantidade total de produtos no carrinho" + carrinho.quantidade)
+    console.log("quantidade do produto no carrinho: " + carrinhoProdutos.quantidade)
+
+    const valor_total = parseFloat(carrinho.valor_total) - parseFloat(calculateValorTotal(mercadoProduto.preco_produto, carrinhoProdutos.quantidade));
+    const quantidadeProdutosNoCarrinho = Number(carrinho.quantidade) - Number(carrinhoProdutos.quantidade)
+    console.log("valor total do carrinho atualizado: " + valor_total)
+    console.log("quantidade no carrinho atualizada: " + quantidadeProdutosNoCarrinho)
+
+    const updatedCarrinho = await carrinho.update({
+        quantidade: quantidadeProdutosNoCarrinho,
+        valor_total: valor_total
+    });
+    console.log("carrinho atualizado: " + updatedCarrinho)
+
     await CarrinhoProdutos.destroy({
         where: {
-            carrinho_id: req.params.carrinho_id,
-            produtos_id: req.params.produto_id
+            carrinho_id: carrinho_id,
+            produtos_id: produto_id
         }
     })
 
