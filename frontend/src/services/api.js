@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://backend-listar.herokuapp.com/",
+  baseURL: "https://listar-application.herokuapp.com/",
 });
 
 export default api;

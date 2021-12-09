@@ -1,0 +1,11 @@
+#btnAdd{
+    background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+    border-width: 2px;
+    border-color: black;
+    text-shadow: 1px 1px black;
+}
+
+#inputQtd{
+    border-width: 2px;
+    border-color: black;
+}

@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Form, Container, Card, CardBody, CardGroup, CardTitle, CardSubtitle, CardText } from 'reactstrap';
-import Footer from "../../components/footer/footer";
-import NavBarLogado from "../../components/navBar/NavBarLogado";
+import { Alert, Button, Form, Container, Card, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap';
 import { getToken } from "../../utils/auth";
+import "./listas.css"
+
 
 
 class MyLists extends React.Component {
@@ -17,7 +17,8 @@ class MyLists extends React.Component {
         }
 
         this.setLista = this.setLista.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.newListSubmit = this.newListSubmit.bind(this);
     }
 
     setLista = (id_lista) => {
@@ -25,7 +26,6 @@ class MyLists extends React.Component {
             id_lista
         })
     }
-
 
     componentDidMount() {
         const token = getToken();
@@ -35,7 +35,7 @@ class MyLists extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://backend-listar.herokuapp.com/carrinhos/minhalista`, options)
+        fetch(`https://listar-application.herokuapp.com/carrinhos/minhalista`, options)
             .then(listas =>
                 listas.json().then(data => this.setState(state => ({
                     carrinhos: data['carrinhos']
@@ -47,22 +47,55 @@ class MyLists extends React.Component {
     render() {
         const { carrinhos } = this.state;
 
-        return (
-            <>
-            <NavBarLogado/>
-                <br /><br />
+        if (carrinhos <= 0) {
+            return (
                 <Container>
-                    <h1>Minhas Listas</h1>
-                    <hr />
-                    <Button color="primary" className="mb-5">Criar Nova Lista</Button>
-                    {carrinhos.map((lista) => {
-                        return (
-                            <Form onSubmit={this.handleSubmit}>
-                                <CardGroup>
-                                    <Card className="mb-3">
+                    <Container>
+                        <Alert className="mt-5" color="danger">
+                            ATENÇÃO!<br/><hr/>
+                            Você não possui Listas, é necessário Criar uma Nova Lista.
+                        </Alert>
+                    </Container>
+                    <Form onSubmit={this.newListSubmit}>
+                        <Button
+                            id="submit" type="submit"
+                            color="primary"
+                            className="mb-3 mt-5"
+                        > Criar Nova Lista
+                        </Button>
+                    </Form>
+                    <br />
+                </Container>
+            )
+        } else {
+            return (
+                <>
+                    <Container>
+                        <Container>
+                            <Alert className="mt-5" color="danger">
+                                ATENÇÃO!<br/><hr/>
+                                Escolha uma lista para adicionar o produto selecionado, ou Crie uma Nova lista!
+                            </Alert>
+                        </Container>
+                        <Form onSubmit={this.newListSubmit}>
+                            <Button
+                                id="submit" type="submit"
+                                color="primary"
+                                className="mb-3 mt-5"
+                            > Criar Nova Lista
+                            </Button>
+                        </Form>
+                        <hr />
+                        <h2 className="mb-4 mt-4">Selecionar uma lista</h2>
+                        <hr />
+
+                        {carrinhos.map((lista, index) => {
+                            return (
+                                <Form onSubmit={this.handleSubmit}>
+                                    <Card id="cardEdit" className="mb-3">
                                         <CardBody>
-                                            <CardTitle tag="h5">
-                                                id da lista = {lista.id}
+                                            <CardTitle key={index} tag="h5">
+                                                Lista nº = {index+1}
                                             </CardTitle>
                                             <CardSubtitle
                                                 className="mb-2 text-muted"
@@ -74,24 +107,20 @@ class MyLists extends React.Component {
                                                 Valor total: R$ {lista.valor_total}
                                             </CardText>
                                             <Button
-                                                id="submit" type="submit"
+                                                id="btnEscolher" type="submit"
                                                 onClick={() => this.setLista(lista.id)}
                                                 className="m-lg-3">
                                                 Escolher
                                             </Button>
-                                            <Button color="danger">
-                                                Excluir
-                                            </Button>
                                         </CardBody>
                                     </Card>
-                                </CardGroup>
-                            </Form>
-                        )
-                    })}
-                </Container>
-                <Footer/>
-            </>
-        )
+                                </Form>
+                            )
+                        })}
+                    </Container>
+                </>
+            )
+        }
     }//fim do render
 
     handleSubmit(e) {
@@ -107,7 +136,7 @@ class MyLists extends React.Component {
             body: JSON.stringify(this.state)
         }
 
-        fetch(`https://backend-listar.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
+        fetch(`https://listar-application.herokuapp.com/carrinhos/${id_lista}/adicionarProduto`, options)
             .then(res => {
                 if (!res.ok && res.status === 401) {
                     alert('ERRO')
@@ -115,7 +144,34 @@ class MyLists extends React.Component {
                 console.log("Adicionou");
                 return res.json()
             }).then(data => {
-                alert("Adicionou")
+                alert("Produto Adicionado!")
+                window.location.reload();
+            }).catch(err => console.log(err))
+
+        e.preventDefault()
+    }//fim do método handleSubmit
+
+
+    newListSubmit(e) {
+        const token = getToken()
+        const options = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(this.state)
+        }
+
+        fetch(`https://listar-application.herokuapp.com/carrinhos`, options)
+            .then(res => {
+                if (!res.ok && res.status === 401) {
+                    alert('ERRO')
+                }
+                console.log("Criou e adicionou");
+                return res.json()
+            }).then(data => {
+                alert("Lista criada e produto adicionado!")
                 window.location.reload();
             }).catch(err => console.log(err))
 

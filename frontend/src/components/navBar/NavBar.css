@@ -1,5 +1,5 @@
-img#logo{
-    width: 100px;
+img#navLogo{
+    width: 150px;
     height: auto;
 }
 
@@ -11,4 +11,8 @@ img#imgUsuario{
 #navRegistro{
     font-size: small;
     color: blue;
+}
+
+#navBarLogado{
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
 }

@@ -1,8 +1,9 @@
 body {
-  color: black;
-  background-image: url(./img/textura2.jpg);
-  background-repeat: no-repeat;
+  /* background-image: url(./img/fundo.png); */
+  background-image: linear-gradient(-225deg, #ff8800 0%, #ffffffce 25%, rgb(255, 255, 255) 100%);
   background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 700px;
 }
 
 code {

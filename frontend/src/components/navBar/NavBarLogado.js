@@ -1,9 +1,8 @@
 import React from "react";
 import { Nav, NavItem, NavLink, Navbar, NavbarText, NavbarBrand, NavbarToggler, Collapse, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import logo from "../../img/logo.jpg"
+import logo from "../../img/logo.png"
 import imgUsuario from "../../img/usuario.png"
 import './NavBar.css'
-// import { isAuth } from "../../utils/auth";
 
 
 class NavBarLogado extends React.Component {
@@ -14,19 +13,18 @@ class NavBarLogado extends React.Component {
     }
   }
 
-
-
   render() {
     // let usuario = this.state;
-   
+
     return (
       <Navbar
-        color="light"
+        className="mb-4"
+        id="navBarLogado"
         expand="md"
         light
       >
-        <NavbarBrand href="/">
-          <img id="logo" src={logo} />
+        <NavbarBrand  href="/">
+          <img id="navLogo" src={logo} />
         </NavbarBrand>
         <NavbarToggler onClick={function noRefCheck() { }} />
         <Collapse navbar>
@@ -35,12 +33,12 @@ class NavBarLogado extends React.Component {
             navbar
           >
             <NavItem>
-              <NavLink href="/busca">
+              <NavLink className="m-lg-3" href="/busca">
                 Buscar Produto
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/listas">
+              <NavLink className="m-lg-3" href="/listas">
                 Minhas Listas
               </NavLink>
             </NavItem>
@@ -50,13 +48,13 @@ class NavBarLogado extends React.Component {
               <img id="imgUsuario" src={imgUsuario} />
             </NavLink>
           </NavbarText>
-          <NavLink>
+          <NavLink href="/">
             {/* {usuario.map((usuario) => {
               return(
                 <h4>{usuario.username}</h4>
               )
             })} */}
-            Nome do usuário
+            <u>Sair</u>
           </NavLink>
         </Collapse>
       </Navbar>

@@ -1,7 +1,9 @@
 import React from "react";
-import { Alert, Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
+import { Button, Container, Input, Table, Form, FormGroup, Col } from 'reactstrap';
 import { getToken } from "../../utils/auth";
 import MyLists from "../listas/MyLists";
+import "./selecionado.css"
+
 
 class Selecionado extends React.Component {
     constructor(props) {
@@ -40,7 +42,7 @@ class Selecionado extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://backend-listar.herokuapp.com/produtos/${id_produto}`, options)
+        fetch(`https://listar-application.herokuapp.com/produtos/${id_produto}`, options)
             .then(mercados =>
                 mercados.json().then(data => this.setState(state => ({
                     mercados: data['mercado_has_produtos']
@@ -69,12 +71,10 @@ class Selecionado extends React.Component {
                         <h2>Você selecionou o produto "{nome_produto}"</h2>
                         <hr />
                         <Form>
-                            {/* onSubmit={this.handleSubmit}> */}
                             <FormGroup row>
                                 <Table row hover responsive>
                                     <thead>
                                         <tr>
-
                                             <th>Supermercado</th>
                                             <th>Valor</th>
                                             <th>Qtd</th>
@@ -90,11 +90,12 @@ class Selecionado extends React.Component {
                                                     </td>
                                                     <td>
                                                         <Col sm={2}>
-                                                            <Input sm={10} type="number" name="quantidade" onChange={this.handleChange}></Input>
+                                                            <Input id="inputQtd" sm={10} type="number" name="quantidade" onChange={this.handleChange}></Input>
                                                         </Col>
                                                     </td>
                                                     <td>
                                                         <Button
+                                                            id="btnAdd"
                                                             onClick={() => this.setIds(mercados.mercado.id)}>
                                                             Adicionar
                                                         </Button>
@@ -112,12 +113,6 @@ class Selecionado extends React.Component {
         } else {
             return (
                 <>
-                    <Container>
-                        <Alert className="mt-5" color="danger">
-                            ATENÇÃO!
-                            Escolha uma lista para adicionar o produto selecionado!
-                        </Alert>
-                    </Container>
                     <MyLists
                         id_mercado_text={this.state.id_mercado}
                         id_produto_text={this.state.id_produtos}
@@ -136,8 +131,3 @@ class Selecionado extends React.Component {
 export default Selecionado;
 
 
-//GET pegar Id das listas que usuário já possui -> http://localhost:5555/carrinhos/minhalista
-
-//POST para adicionar na lista já criada -> http://localhost:5555/carrinhos/:carrinho_id/adicionarProduto
-
-//POST para criar uma lista -> http://localhost:5555/carrinhos

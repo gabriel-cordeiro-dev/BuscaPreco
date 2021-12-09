@@ -2,10 +2,10 @@ import React from 'react'
 import { Button, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
 import api from '../../services/api';
 import { loginf } from '../../utils/auth';
-import NavBarLock from '../../components/navBar/NavBarLock';
 import Footer from '../../components/footer/footer.js';
 import './login.css'
 import '../../components/footer/footer.css'
+import logo from "../../img/logo.png"
 
 
 
@@ -30,7 +30,7 @@ class Login extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault();
-        
+
         const { username, password } = this.state
 
         try {
@@ -50,9 +50,11 @@ class Login extends React.Component {
     render() {
         return (
             <>
-                <NavBarLock />
+                <a href="./" >
+                    <img id="logo" src={logo} />
+                </a>
                 <Container>
-                    <h1 className='mt-5'>Login</h1>
+                    <h1 >Login</h1>
                     <Form initialvalues={{}} onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Row>
@@ -74,14 +76,12 @@ class Login extends React.Component {
                         <Row>
                             <Col sm="12" md={{ size: 6, offset: 3 }}>
                                 <Button color="warning" size="lg" type="submit" value="Entrar">Entrar</Button>
-                                <div id="btnCriar">
-                                    <Button href="./Registro" color="link">Não possuo conta</Button>
-                                </div>
+                                <Button href="./Registro" color="link">Não possuo conta</Button>
                             </Col>
                         </Row>
                     </Form>
                 </Container>
-                <footer><Footer/></footer>  
+                <footer><Footer /></footer>
             </>
         );
     }

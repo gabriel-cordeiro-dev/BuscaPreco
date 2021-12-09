@@ -27,7 +27,7 @@ class Produtos extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        fetch(`https://backend-listar.herokuapp.com/produtos/busca?item_name`, options)
+        fetch(`https://listar-application.herokuapp.com/produtos/busca?item_name`, options)
             .then(mercados =>
                 mercados.json().then(data => this.setState(state => ({
                     produtos: data['produtos']
@@ -62,8 +62,8 @@ class Produtos extends React.Component {
 
                                     <Button
                                         id="btnProduto"
-                                        className="mb-3"
-                                        color="primary"
+                                        className="mb-4"
+                                        color="secondary"
                                         onClick={() => this.setProduto(lista.id, lista.item_name)}
                                     >
                                         <b>{lista.item_name}</b>

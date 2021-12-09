@@ -2,9 +2,10 @@ import React from 'react'
 import { Button, Container, Row, Col, Label, Form, FormGroup, Input } from 'reactstrap'
 import api from '../../services/api';
 import { loginf } from '../../utils/auth';
-import NavBarLock from '../../components/navBar/NavBarLock';
 import Footer from '../../components/footer/footer';
 import '../../components/footer/footer.css'
+import logo from "../../img/logo.png"
+
 
 
 
@@ -50,9 +51,11 @@ class Registro extends React.Component {
     render() {
         return (
             <>
-                <NavBarLock />
+                <a href="./" >
+                    <img id="logo" src={logo} />
+                </a>
                 <Container>
-                    <h1 className='mt-5'>Registre-se!</h1>
+                    <h1>Registre-se!</h1>
                     <Form initialvalues={{}} onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Row>
@@ -74,6 +77,7 @@ class Registro extends React.Component {
                         <Row>
                             <Col sm="12" md={{ size: 6, offset: 3 }}>
                                 <Button color="warning" size="lg" type="submit" value="Criar">Criar</Button>
+                                <Button href="./login" color="link">Já possuo conta</Button>
                             </Col>
                         </Row>
                     </Form>
